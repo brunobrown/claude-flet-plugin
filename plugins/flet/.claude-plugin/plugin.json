@@ -1,0 +1,9 @@
+{
+  "name": "flet",
+  "version": "0.1.0",
+  "description": "Flet Python framework expertise: declarative apps and extension packages",
+  "author": { "name": "Bruno Brown" },
+  "homepage": "https://github.com/brunobrown/claude-flet-plugin",
+  "repository": "https://github.com/brunobrown/claude-flet-plugin",
+  "license": "MIT"
+}

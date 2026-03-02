@@ -1,0 +1,12 @@
+{
+  "name": "@brunobrown/claude-flet-plugin",
+  "version": "0.1.0",
+  "description": "Claude Code plugin for Flet Python framework: declarative apps and extension packages",
+  "author": "Bruno Brown",
+  "license": "MIT",
+  "keywords": ["claude-code", "plugin", "flet", "python", "flutter"],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/brunobrown/claude-flet-plugin"
+  }
+}
