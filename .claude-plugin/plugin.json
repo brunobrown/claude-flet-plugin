@@ -1,15 +1,22 @@
 {
   "name": "flet",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Flet Python framework expertise: declarative apps and extension packages",
-  "author": { "name": "Bruno Brown" },
+  "author": {
+    "name": "Bruno Brown"
+  },
   "homepage": "https://github.com/brunobrown/claude-flet-plugin",
   "repository": "https://github.com/brunobrown/claude-flet-plugin",
   "license": "MIT",
-  "agents": [
-    "./agents/flet-app-builder.md",
-    "./agents/flet-extension-builder.md"
-  ],
-  "commands": ["./commands/"],
-  "skills": ["./skills/"]
+  "keywords": [
+    "claude-code",
+    "flet",
+    "python",
+    "flutter",
+    "declarative-ui",
+    "extensions",
+    "mobile",
+    "desktop",
+    "web"
+  ]
 }

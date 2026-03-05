@@ -1,11 +1,11 @@
 ---
 name: flet-app
-description: "Expert knowledge for building multi-platform Python apps with Flet's declarative UI. Covers state management, hooks, navigation, theming, async patterns, and component architecture. Flet 0.81.x+."
+description: "Expert knowledge for building multi-platform Python apps with Flet's declarative UI. Covers state management, hooks, navigation, theming, async patterns, and component architecture. Flet 0.82.x+."
 ---
 
 # Flet App Development — Complete Reference
 
-> Flet 0.81.x | Declarative mode | Validated against real production apps
+> Flet 0.82.x | Declarative mode | Validated against real production apps
 
 ---
 
@@ -1527,7 +1527,7 @@ def HomePage():
         [
             ft.Text(f"Hello, {name}!", size=28, weight=ft.FontWeight.BOLD),
             ft.Text(
-                "Welcome to the Flet 0.81.x demo app.",
+                "Welcome to the Flet 0.82.x demo app.",
                 size=14,
                 color=ft.Colors.GREY_700,
             ),

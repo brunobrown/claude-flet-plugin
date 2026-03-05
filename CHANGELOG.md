@@ -1,6 +1,20 @@
 # Changelog
 
-All notable changes to claude-flet-plugin will be documented in this file.
+## [0.2.0] - 2026-03-05
+
+### Changed
+
+- Restructured repository to flat layout matching Claude Code plugin conventions (agents/, commands/, skills/ at root)
+- Updated `marketplace.json` with `source: "./"` (flat plugin pattern)
+- Updated `package.json` with `files`, `bugs`, `homepage` fields
+- Bumped target Flet version from 0.81.x to **0.82.x** across all skills and agents
+- Removed nested `plugins/flet/` directory
+
+### Target Flet Version
+
+- Flet **0.82.x** — Verified: no breaking changes to declarative mode, hooks, or extension system
+
+---
 
 ## [0.1.0] - 2026-03-02
 

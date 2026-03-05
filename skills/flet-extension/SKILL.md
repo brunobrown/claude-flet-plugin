@@ -1,11 +1,11 @@
 ---
 name: flet-extension
-description: "Expert knowledge for creating Flet extension packages (Service Controls and UI Controls). Covers Python/Dart integration, type mapping, events, compound widgets, project configuration, and publishing. Flet 0.81.x+."
+description: "Expert knowledge for creating Flet extension packages (Service Controls and UI Controls). Covers Python/Dart integration, type mapping, events, compound widgets, project configuration, and publishing. Flet 0.82.x+."
 ---
 
 # Flet Extension Development — Complete Reference
 
-> Flet 0.81.x | Validated against real production extensions (flet-onesignal, flet-vibration)
+> Flet 0.82.x | Validated against real production extensions (flet-onesignal, flet-vibration)
 
 ---
 

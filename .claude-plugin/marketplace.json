@@ -5,19 +5,40 @@
   "owner": {
     "name": "Bruno Brown"
   },
+  "metadata": {
+    "description": "Expert Claude Code plugin for building multi-platform Python apps and extensions with the Flet framework"
+  },
   "plugins": [
     {
       "name": "flet",
-      "source": "./plugins/flet",
-      "description": "Flet Python framework expertise: declarative apps and extension packages",
-      "version": "0.1.0",
+      "source": "./",
+      "description": "Expert knowledge for Flet declarative apps and extension packages — 2 agents, 2 skills, 3 commands covering state management, hooks, Python/Dart integration, and extension publishing",
+      "version": "0.2.0",
       "author": {
         "name": "Bruno Brown"
       },
       "homepage": "https://github.com/brunobrown/claude-flet-plugin",
       "repository": "https://github.com/brunobrown/claude-flet-plugin",
       "license": "MIT",
+      "keywords": [
+        "flet",
+        "python",
+        "flutter",
+        "declarative-ui",
+        "extensions",
+        "mobile",
+        "desktop",
+        "web"
+      ],
       "category": "development",
+      "tags": [
+        "flet",
+        "python",
+        "flutter",
+        "ui-framework",
+        "extensions",
+        "code-review"
+      ],
       "strict": false
     }
   ]

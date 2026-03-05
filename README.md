@@ -5,8 +5,8 @@ A Claude Code plugin that provides expert knowledge for building Python apps and
 ## Installation
 
 ```bash
-# In Claude Code
-/plugin install /path/to/claude-flet-plugin
+# Install from GitHub
+claude plugin install github:brunobrown/claude-flet-plugin
 ```
 
 ## What's Included
@@ -35,7 +35,7 @@ A Claude Code plugin that provides expert knowledge for building Python apps and
 
 ## Flet Version
 
-This plugin targets **Flet 0.81.x+** (declarative mode). All code examples use:
+This plugin targets **Flet 0.82.x** (declarative mode). All code examples use:
 
 - `ft.run(main)` as entry point
 - `@ft.component` for functional components

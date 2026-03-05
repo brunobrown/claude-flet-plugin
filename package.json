@@ -1,12 +1,39 @@
 {
   "name": "@brunobrown/claude-flet-plugin",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Claude Code plugin for Flet Python framework: declarative apps and extension packages",
-  "author": "Bruno Brown",
+  "keywords": [
+    "claude-code",
+    "plugin",
+    "flet",
+    "python",
+    "flutter",
+    "declarative-ui",
+    "extensions",
+    "mobile",
+    "desktop",
+    "web"
+  ],
+  "author": {
+    "name": "Bruno Brown"
+  },
   "license": "MIT",
-  "keywords": ["claude-code", "plugin", "flet", "python", "flutter"],
   "repository": {
     "type": "git",
-    "url": "https://github.com/brunobrown/claude-flet-plugin"
-  }
+    "url": "git+https://github.com/brunobrown/claude-flet-plugin.git"
+  },
+  "homepage": "https://github.com/brunobrown/claude-flet-plugin#readme",
+  "bugs": {
+    "url": "https://github.com/brunobrown/claude-flet-plugin/issues"
+  },
+  "files": [
+    "agents/",
+    "commands/",
+    "skills/",
+    ".claude-plugin/plugin.json",
+    ".claude-plugin/marketplace.json",
+    "CHANGELOG.md",
+    "LICENSE",
+    "README.md"
+  ]
 }
