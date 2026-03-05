@@ -1,0 +1,13 @@
+[project]
+name = "claude-flet-plugin"
+version = "0.1.0"
+description = "Add your description here"
+requires-python = ">=3.14"
+dependencies = [
+    "flet>=0.82.0",
+]
+
+[dependency-groups]
+dev = [
+    "flet[all]>=0.82.0",
+]
