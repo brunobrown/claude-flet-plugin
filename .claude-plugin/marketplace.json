@@ -13,7 +13,7 @@
       "name": "flet",
       "source": "./",
       "description": "Expert knowledge for Flet declarative apps and extension packages — 2 agents, 2 skills, 3 commands covering state management, hooks, Python/Dart integration, and extension publishing",
-      "version": "0.2.0",
+      "version": "0.3.0",
       "author": {
         "name": "Bruno Brown"
       },

@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.3.0] - 2026-03-12
+
+### Added
+
+- Codex skill pack support via `AGENTS.md`, `.agents/skills/*`, and `.codex/*` (keeps Claude plugin layout unchanged)
+
 ## [0.2.0] - 2026-03-05
 
 ### Changed

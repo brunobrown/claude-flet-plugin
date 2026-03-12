@@ -1,0 +1,11 @@
+interface:
+  display_name: "Flet Review Workflow"
+  short_description: "Checklist-driven review for Flet apps and extensions."
+  brand_color: "#F59E0B"
+  default_prompt: |
+    Perform a structured review of a Flet codebase.
+    First classify it as app, extension, or both, then apply the appropriate checklist.
+    Report issues with severity and concrete fixes.
+policy:
+  allow_implicit_invocation: true
+
