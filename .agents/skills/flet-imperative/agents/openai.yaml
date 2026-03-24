@@ -1,0 +1,14 @@
+interface:
+  display_name: "Flet Imperative"
+  short_description: "Flet 0.82.x imperative/procedural app development (page.add, auto-update, 82+ breaking changes, API traps)."
+  brand_color: "#0EA5E9"
+  default_prompt: |
+    Use this skill when building Flet apps in imperative mode (page.add, page.update).
+    Priorities:
+    - Use ft.run(main) — never ft.app()
+    - ft.Colors.NAME (uppercase C), ft.Alignment.CENTER (uppercase A)
+    - Tabs three-part pattern (Tabs + TabBar + TabBarView with height)
+    - page.show_dialog() / page.pop_dialog() — never page.open()
+    - Verify uncertain APIs with inspect before using
+policy:
+  allow_implicit_invocation: true

@@ -1,6 +1,6 @@
 ---
 name: flet-app
-description: "Expert knowledge for building multi-platform Python apps with Flet's declarative UI. Covers state management, hooks, navigation, theming, async patterns, and component architecture. Flet 0.82.x+."
+description: "Expert knowledge for building multi-platform Python apps with Flet's declarative UI. Covers state management, hooks, navigation, theming, async patterns, component architecture, 82+ breaking changes, API traps, and 19 new controls. Flet 0.82.x+."
 ---
 
 # Flet App Development — Complete Reference
@@ -1938,3 +1938,17 @@ files = await ft.Clipboard().get_files()
 - [ ] Factory function in navigation loops
 - [ ] `AppCtx(ctx, lambda: View(...))` — not `AppCtx(ctx, View(...))`
 - [ ] `ft.Colors.NAME` and `ft.Icons.NAME` — uppercase
+
+---
+
+## Reference Documentation
+
+These references apply to both declarative and imperative modes:
+
+- **[Architecture](references/architecture.md)** — Clean architecture pattern for production Flet apps
+- **[API Traps](references/api-traps.md)** — Critical API pitfalls verified with `inspect`
+- **[Breaking Changes](references/breaking-changes.md)** — 82+ changes from Flet 0.x to 1.0+
+- **[Error Guide](references/error-guide.md)** — Error lookup table with solutions
+- **[New Controls](references/new-controls.md)** — 19 new controls in Flet 1.0+
+
+For imperative mode (`page.add`, `page.update`), see the **flet-imperative** skill.

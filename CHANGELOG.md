@@ -1,5 +1,26 @@
 # Changelog
 
+## [0.4.0] - 2026-03-24
+
+### Added
+
+- **New skill: `flet-imperative`** — Complete reference for imperative/procedural mode (`page.add`, `page.update`, auto-update mechanism) with 20 verified example files
+- **4 reference guides** (shared by both declarative and imperative skills):
+  - `references/breaking-changes.md` — 82+ breaking changes from Flet 0.x to 1.0+
+  - `references/api-traps.md` — Critical API pitfalls verified with `inspect`
+  - `references/error-guide.md` — Error lookup table with solutions
+  - `references/new-controls.md` — 19 new controls in Flet 1.0+ (MD3 buttons, SearchBar, Shimmer, KeyboardListener, etc.)
+- **20 example files** covering basic apps, async, forms, file picker, animations, dialogs, layouts, tabs, navigation, data tables, window controls, drag-and-drop, keyboard events, gestures, clipboard, media, canvas, file I/O, and chart visualization
+- Flet 1.0+ breaking changes checklist in `/flet-review` command
+- Flet 1.0+ anti-patterns in `flet-app-builder` agent
+
+### Changed
+
+- Enriched `flet-app` skill description and added reference documentation section
+- All new content translated to English from [awesome-flet-development-skill](https://github.com/HnBigVolibear/awesome-flet-development-skill)
+
+---
+
 ## [0.3.0] - 2026-03-12
 
 ### Added

@@ -99,3 +99,9 @@ my_app/
 | Hook outside component | `use_state` in regular function | Move to `@ft.component` |
 | Global re-render per keystroke | `@ft.observable` for form input | `ft.use_state` for form fields |
 | `use_effect` cleanup ignored | Returning cleanup function | Use `cleanup=` parameter |
+| `ft.border_radius.all(10)` | Deprecated lowercase form | `ft.BorderRadius.all(10)` (uppercase B) |
+| `ft.ElevatedButton(...)` | Removed in Flet 1.0+ | `ft.Button(content=...)` or `ft.FilledButton(...)` |
+| `ft.alignment.center` | Lowercase deprecated | `ft.Alignment.CENTER` (uppercase A) |
+| `page.open(dialog)` | Removed in Flet 1.0+ | `page.show_dialog(dialog)` / `page.pop_dialog()` |
+| `page.snack_bar = ...` | Deprecated | `page.overlay.append(sb); sb.open = True` |
+| `ft.Tabs(tabs=[...])` | API rewritten | Three-part: `Tabs(content=Column([TabBar, TabBarView]), length=N)` |

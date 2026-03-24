@@ -59,6 +59,18 @@ If reviewing a Flet app, check all of these:
 - [ ] Uses `ft.Icons.NAME` (uppercase) not `ft.icons.NAME`
 - [ ] Theme uses `color_scheme_seed` or `color_scheme` (not `primary_swatch`)
 
+### Flet 1.0+ Breaking Changes
+- [ ] No `ft.ElevatedButton` usage (removed — use `ft.Button` or `ft.FilledButton`)
+- [ ] No `ft.border_radius.all()` (deprecated — use `ft.BorderRadius.all()`)
+- [ ] No `ft.alignment.center` (removed — use `ft.Alignment.CENTER`)
+- [ ] No `ft.Tabs(tabs=[...])` (rewritten — use three-part pattern)
+- [ ] `TabBarView` has explicit `height` set
+- [ ] No `page.open(dialog)` (removed — use `page.show_dialog()`)
+- [ ] No `page.snack_bar = ...` (removed — use `page.overlay.append()`)
+- [ ] `Icon` uses `icon=` parameter (not `name=`)
+- [ ] `Badge` uses only `label=` (no `label_style`, `small`, etc.)
+- [ ] No `ft.Icons.ROBOT` (use `ft.Icons.ANDROID` or `ft.Icons.SMART_TOY`)
+
 ---
 
 ## Step 3: Extension Checklist

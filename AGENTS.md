@@ -15,6 +15,7 @@ Codex-oriented skills are provided under:
 
 - `.agents/skills/flet-app/` (reference: declarative apps, Flet 0.82.x+)
 - `.agents/skills/flet-extension/` (reference: extension packages)
+- `.agents/skills/flet-imperative/` (reference: imperative mode, breaking changes, API traps, 20 examples)
 - `.agents/skills/flet-app-workflow/` (guided app build workflow)
 - `.agents/skills/flet-extension-workflow/` (guided extension build workflow)
 - `.agents/skills/flet-review-workflow/` (review checklist workflow)
@@ -26,7 +27,7 @@ Each skill includes:
 
 ## Flet version target
 
-All guidance in this repo targets **Flet 0.82.x** (declarative mode).
+All guidance in this repo targets **Flet 0.82.x** (declarative and imperative modes).
 
 ## Credits
 
