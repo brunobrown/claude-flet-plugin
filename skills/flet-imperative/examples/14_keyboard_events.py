@@ -3,7 +3,7 @@
 Flet Keyboard Events Example
 Demonstrates keyboard shortcuts and event handling
 
-Target version: Flet >= 0.82.0 (Flet 1.0+)
+Target version: Flet >= 0.83.0 (Flet 1.0+)
 
 Breaking changes:
   - ✅ Flet 1.0+: use page.on_keyboard_event to handle keyboard events

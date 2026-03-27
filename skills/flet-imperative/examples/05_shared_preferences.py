@@ -3,7 +3,7 @@
 Flet Local Storage Example - SharedPreferences
 Demonstrates data persistence using shared_preferences in Flet 1.0+
 
-Target version: Flet >= 0.82.0 (Flet 1.0+)
+Target version: Flet >= 0.83.0 (Flet 1.0+)
 
 Breaking changes:
   - ❌ Flet 0.x: page.client_storage  →  Flet 1.0+: removed

@@ -47,9 +47,9 @@ cp -R /path/to/claude-flet-plugin/.agents/skills /path/to/your-project/.agents/
 
 | Skill | Description |
 |-------|-------------|
-| **flet-app** | Declarative mode — state management, hooks, navigation, theming, async patterns, component architecture, 82+ breaking changes, API traps |
-| **flet-extension** | Extension packages — Service Controls, UI Controls, Python/Dart integration, type mapping, events, publishing |
-| **flet-imperative** | Imperative mode — `page.add`, auto-update, 82+ breaking changes, API traps, error guide, 19 new controls, 20 verified examples |
+| **flet-app** | Declarative mode — state management, hooks, navigation, theming, async patterns, component architecture, 82+ breaking changes, API traps, field validation (Annotated + V rules), customizable scrollbars |
+| **flet-extension** | Extension packages — Service Controls, UI Controls, Python/Dart integration, type mapping, events, @control/@value decorators, Prop descriptor, publishing |
+| **flet-imperative** | Imperative mode — `page.add`, smart auto-update, 82+ breaking changes, API traps, error guide, 19 new controls, customizable scrollbars, expanded SharedPreferences, 20 verified examples |
 
 ### Commands
 
@@ -68,7 +68,7 @@ cp -R /path/to/claude-flet-plugin/.agents/skills /path/to/your-project/.agents/
 
 ## Flet Version
 
-This plugin targets **Flet 0.82.x** (both declarative and imperative modes). Code examples use:
+This plugin targets **Flet 0.83.x** (both declarative and imperative modes). Code examples use:
 
 - `ft.run(main)` as entry point
 - `@ft.component` for functional components

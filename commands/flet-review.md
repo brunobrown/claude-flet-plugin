@@ -71,6 +71,11 @@ If reviewing a Flet app, check all of these:
 - [ ] `Badge` uses only `label=` (no `label_style`, `small`, etc.)
 - [ ] No `ft.Icons.ROBOT` (use `ft.Icons.ANDROID` or `ft.Icons.SMART_TOY`)
 
+### Flet 0.83.x Breaking Changes
+- [ ] No `ft.padding.all()` / `ft.padding.symmetric()` / `ft.padding.only()` (removed in 0.83.0 — use `ft.Padding.all()`, `ft.Padding.symmetric()`, `ft.Padding.only()`)
+- [ ] SharedPreferences `.set()` validates types (`str`, `int`, `float`, `bool`, `list[str]` only)
+- [ ] Scrollbar configuration uses `Scrollbar(...)` instance (not raw `ScrollMode` where customization is needed)
+
 ---
 
 ## Step 3: Extension Checklist

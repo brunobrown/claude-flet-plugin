@@ -176,5 +176,59 @@ python -c "import flet as ft; print([m for m in dir(ft.Page) if not m.startswith
 
 ---
 
-**Version**: Flet >= 0.82.0
+---
+
+## Padding Factory Functions (Removed in 0.83.0)
+
+```python
+# OLD (removed in 0.83.0)
+ft.padding.all(10)
+ft.padding.symmetric(vertical=5, horizontal=10)
+ft.padding.only(left=5, top=10)
+
+# NEW — use class methods
+ft.Padding.all(10)
+ft.Padding.symmetric(vertical=5, horizontal=10)
+ft.Padding.only(left=5, top=10)
+```
+
+---
+
+## SharedPreferences (Expanded in 0.83.0)
+
+```python
+# 0.82.x — string only
+await prefs.set("key", "value")
+
+# 0.83.x — supports int, float, bool, list[str]
+await prefs.set("count", 42)
+await prefs.set("ratio", 3.14)
+await prefs.set("enabled", True)
+await prefs.set("tags", ["python", "flet"])
+```
+
+---
+
+## Customizable Scrollbars (New in 0.83.0)
+
+```python
+from flet.controls.scrollable_control import Scrollbar, ScrollbarOrientation
+
+# Any scrollable control accepts a Scrollbar instance
+ft.Column(
+    scroll=Scrollbar(
+        thumb_visibility=True,
+        track_visibility=True,
+        thickness=8,
+        radius=4,
+        interactive=True,
+        orientation=ScrollbarOrientation.RIGHT,
+    ),
+    controls=[...],
+)
+```
+
+---
+
+**Version**: Flet >= 0.83.0
 **All examples verified with `inspect`**

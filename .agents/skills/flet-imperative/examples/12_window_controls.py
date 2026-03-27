@@ -3,7 +3,7 @@
 Flet Window Controls Example
 Demonstrates window size, position, and state control features
 
-Target version: Flet >= 0.82.0 (Flet 1.0+)
+Target version: Flet >= 0.83.0 (Flet 1.0+)
 
 Breaking changes:
   - ❌ Flet 0.x: page.on_resized event  →  Flet 1.0+: event renamed to on_resize

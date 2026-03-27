@@ -3,7 +3,7 @@
 Flet Async Real-Time Update Example - Digital Clock
 Demonstrates how to use asyncio for reliable real-time updates
 
-Target version: Flet >= 0.82.0 (Flet 1.0+)
+Target version: Flet >= 0.83.0 (Flet 1.0+)
 
 Breaking changes:
   - ❌ Flet 0.x: Use ft.app(target=main) to start  →  Flet 1.0+: raises error

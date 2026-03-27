@@ -1,6 +1,6 @@
 # Flet 1.0+ New Controls Reference
 
-> 19 new controls introduced in Flet 1.0+ (>= 0.82.0).
+> 19 new controls introduced in Flet 1.0+ (>= 0.82.0), plus new features in 0.83.0.
 
 ---
 
@@ -235,5 +235,80 @@ ft.TransparentPointer(
 
 ---
 
-**Version**: Flet >= 0.82.0
-**New Controls**: 19
+## New in Flet 0.83.0
+
+### Customizable Scrollbars
+
+All scrollable controls (`Column`, `Row`, `ListView`, `GridView`, `ExpansionPanelList`) now accept a `Scrollbar` instance:
+
+```python
+from flet.controls.scrollable_control import Scrollbar, ScrollbarOrientation
+
+ft.ListView(
+    scroll=Scrollbar(
+        thumb_visibility=True,
+        track_visibility=True,
+        thickness=8,
+        radius=4,
+        interactive=True,
+        orientation=ScrollbarOrientation.RIGHT,
+    ),
+    controls=[ft.Text(f"Item {i}") for i in range(100)],
+)
+```
+
+**Scrollbar properties**: `thumb_visibility`, `track_visibility`, `thickness`, `radius`, `interactive`, `orientation` (LEFT/RIGHT/TOP/BOTTOM).
+
+### Scrollable ExpansionPanelList
+
+`ExpansionPanelList` now inherits from `ScrollableControl` — supports `scroll`, `auto_scroll`, `scroll_interval`, `on_scroll`, and `scroll_to()`.
+
+```python
+ft.ExpansionPanelList(
+    scroll=Scrollbar(thumb_visibility=True),
+    controls=[ft.ExpansionPanel(...) for _ in range(20)],
+)
+```
+
+### SharedPreferences Type Expansion
+
+Now supports `int`, `float`, `bool`, and `list[str]` in addition to `str`:
+
+```python
+prefs = ft.SharedPreferences()
+page.services.append(prefs)
+
+await prefs.set("count", 42)              # int
+await prefs.set("ratio", 3.14)            # float
+await prefs.set("dark_mode", True)         # bool
+await prefs.set("tags", ["py", "flet"])    # list[str]
+```
+
+### Declarative Field Validation (Annotated + V Rules)
+
+Controls now use `typing.Annotated` with `V` validation rules for compile-time-like field constraints:
+
+```python
+from typing import Annotated
+from flet.utils.validation import V
+
+# Used internally by controls — example:
+opacity: Annotated[Number, V.between(0.0, 1.0)] = 1.0
+elevation: Annotated[Number, V.ge(0)] = 2
+
+# Available V rules: instance_of, gt, ge, lt, le, between, factor_of,
+# multiple_of, eq, ne, one_of, non_empty, length_ge, length_eq,
+# length_between, visible_control, visible_controls, gt_field, ge_field,
+# lt_field, le_field, or_, deprecated, field, ensure
+```
+
+### Performance: Up to 6.7x Faster Diffing
+
+- **Prop descriptor**: Tracks only modified properties (sparse `_values` dict)
+- **@value decorator**: ~150 data types use content-based comparison
+- **Smart update()**: Framework skips automatic update if explicit `.update()` was called
+
+---
+
+**Version**: Flet >= 0.83.0
+**New Controls**: 19 (+ scrollbar customization, expanded SharedPreferences, field validation)

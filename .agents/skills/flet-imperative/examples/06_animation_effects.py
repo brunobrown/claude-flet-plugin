@@ -3,7 +3,7 @@
 Flet Animation Effects Example
 Demonstrates various animation effects and interactions
 
-Target version: Flet >= 0.82.0 (Flet 1.0+)
+Target version: Flet >= 0.83.0 (Flet 1.0+)
 
 Breaking changes:
   - ❌ Flet 0.x: animate parameter for opacity/rotation/scale  →  Flet 1.0+: no effect

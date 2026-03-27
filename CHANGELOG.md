@@ -1,5 +1,35 @@
 # Changelog
 
+## [0.5.0] - 2026-03-27
+
+### Added
+
+- **Flet 0.83.x support** — Updated all skills, agents, commands, and references for Flet 0.83.0
+- **Performance documentation** — Up to 6.7x faster control diffing via `Prop` descriptor and `@value` decorator
+- **Smart update logic** — Framework tracks explicit `.update()` calls to skip redundant auto-updates
+- **Declarative field validation** — `Annotated` types with `V` rules (`V.between`, `V.ge`, `V.instance_of`, etc.)
+- **Customizable scrollbars** — `Scrollbar` class with `thumb_visibility`, `track_visibility`, `thickness`, `radius`, `interactive`, `orientation`
+- **Scrollable ExpansionPanelList** — Now inherits `ScrollableControl`
+- **Expanded SharedPreferences** — Supports `int`, `float`, `bool`, `list[str]` in addition to `str`
+- **Padding removal notice** — Module-level `ft.padding.all()` / `.symmetric()` / `.only()` removed in 0.83.0
+- **Flet 0.83.x review checklist** in `/flet-review` command
+- **Extension builder awareness** — `@control` / `@value` decorators, `Prop` descriptor, `skip_field()` helper
+
+### Changed
+
+- Bumped target Flet version from **0.82.x** to **0.83.x** across all skills, agents, commands, references, and README
+- Updated `flet-app-builder` agent with 0.83.x performance and API awareness
+- Updated `flet-extension-builder` agent with 0.83.x decorator and descriptor awareness
+- Enriched `api-traps.md` with padding deprecation, SharedPreferences types, and scrollbar customization
+- Enriched `error-guide.md` with 0.83.x-specific errors
+- Enriched `new-controls.md` with 0.83.x features (scrollbars, SharedPreferences, field validation, performance)
+
+### Target Flet Version
+
+- Flet **0.83.x** — Performance improvements, field validation, customizable scrollbars
+
+---
+
 ## [0.4.0] - 2026-03-24
 
 ### Added

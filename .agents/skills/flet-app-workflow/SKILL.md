@@ -1,6 +1,6 @@
 ---
 name: flet-app-workflow
-description: "Guided workflow for building a Flet declarative app from scratch (Flet 0.82.x+)."
+description: "Guided workflow for building a Flet declarative app from scratch (Flet 0.83.x+)."
 ---
 
 # Flet App Workflow

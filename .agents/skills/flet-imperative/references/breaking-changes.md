@@ -1,6 +1,6 @@
 # Flet 1.0+ Breaking Changes Guide
 
-> Complete list of breaking changes in Flet 1.0+ (>= 0.82.0). All deprecated APIs from Flet 0.x have been removed.
+> Complete list of breaking changes in Flet 1.0+ (>= 0.83.0). All deprecated APIs from Flet 0.x have been removed.
 
 ---
 

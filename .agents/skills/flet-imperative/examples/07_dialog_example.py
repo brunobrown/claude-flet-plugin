@@ -3,7 +3,7 @@
 Flet Dialog Example
 Demonstrates the new dialog display methods in Flet 1.0+
 
-Target version: Flet >= 0.82.0 (Flet 1.0+)
+Target version: Flet >= 0.83.0 (Flet 1.0+)
 
 Breaking changes:
   - ❌ Flet 0.x: page.bottom_sheet = xxx  →  Flet 1.0+: removed (page has no such attribute)

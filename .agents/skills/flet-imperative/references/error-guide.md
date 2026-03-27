@@ -28,6 +28,10 @@
 | `module 'flet' has no attribute 'Audio'` | Removed | Use third-party libs |
 | `unexpected keyword argument 'on_change'` (Dropdown) | Renamed | Use `on_select` |
 | `module 'flet' has no attribute 'PaintStyle'` | Renamed | `ft.PaintingStyle` |
+| `Unsupported value type` (SharedPreferences) | Wrong type passed | Use `str`, `int`, `float`, `bool`, or `list[str]` only |
+| `padding.all is deprecated` | Module-level function removed in 0.83 | Use `Padding.all()` class method |
+| `padding.symmetric is deprecated` | Module-level function removed in 0.83 | Use `Padding.symmetric()` class method |
+| `FieldValidationError` | Annotated field constraint violated | Check `V.*` rule on the field (e.g., `V.between(0, 1)` for opacity) |
 | `module 'flet.canvas' has no attribute 'Polygon'` | Removed | Use `ft.canvas.Path` |
 | `unexpected keyword argument 'stroke_dash'` | Renamed | `stroke_dash_pattern` |
 | `'Path' object has no attribute 'move_to'` | API changed | `elements=[Path.MoveTo(...)]` |

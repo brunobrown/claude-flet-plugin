@@ -1,6 +1,6 @@
 # Flet 1.0+ Breaking Changes Guide
 
-> Complete list of breaking changes in Flet 1.0+ (>= 0.82.0). All deprecated APIs from Flet 0.x have been removed.
+> Complete list of breaking changes in Flet 1.0+ (>= 0.83.0). All deprecated APIs from Flet 0.x have been removed.
 
 ---
 
@@ -432,5 +432,71 @@ page.run_task(update_ui)  # Must pass async def
 
 ---
 
-**Applicable Version**: Flet >= 0.82.0
-**Total Breaking Changes**: 82+ (continuously updated)
+## 27. Padding Module-Level Functions (Removed in 0.83.0)
+
+```python
+# OLD (removed in 0.83.0)
+ft.padding.all(10)
+ft.padding.symmetric(vertical=5, horizontal=10)
+ft.padding.only(left=5, top=10)
+
+# NEW — use class methods
+ft.Padding.all(10)
+ft.Padding.symmetric(vertical=5, horizontal=10)
+ft.Padding.only(left=5, top=10)
+```
+
+---
+
+## 28. SharedPreferences Type Expansion (0.83.0)
+
+```python
+# 0.82.x — string only
+await prefs.set("key", "value")
+
+# 0.83.x — supports int, float, bool, list[str]
+await prefs.set("count", 42)          # int
+await prefs.set("ratio", 3.14)        # float
+await prefs.set("enabled", True)      # bool
+await prefs.set("tags", ["a", "b"])   # list[str]
+
+# Invalid types raise ValueError
+await prefs.set("data", {"key": "val"})  # ValueError!
+```
+
+---
+
+## 29. Scrollbar Customization (0.83.0)
+
+```python
+# 0.82.x — ScrollMode only
+ft.Column(scroll=ft.ScrollMode.AUTO, ...)
+
+# 0.83.x — Scrollbar instance for fine control
+from flet.controls.scrollable_control import Scrollbar, ScrollbarOrientation
+
+ft.Column(
+    scroll=Scrollbar(
+        thumb_visibility=True,
+        track_visibility=True,
+        thickness=8,
+        radius=4,
+        interactive=True,
+        orientation=ScrollbarOrientation.RIGHT,
+    ),
+    controls=[...],
+)
+```
+
+**Note**: `ScrollMode` still works — `Scrollbar` is additive for when you need customization.
+
+---
+
+## 30. ExpansionPanelList Now Scrollable (0.83.0)
+
+`ExpansionPanelList` inherits from `ScrollableControl` — supports `scroll`, `auto_scroll`, `scroll_interval`, `on_scroll`, and `scroll_to()`.
+
+---
+
+**Applicable Version**: Flet >= 0.83.0
+**Total Breaking Changes**: 85+ (continuously updated)

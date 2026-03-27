@@ -3,7 +3,7 @@
 Flet Layout and Responsiveness Example
 Demonstrates Row, Column, Stack, expand, scroll, and other layout features
 
-Target version: Flet >= 0.82.0 (Flet 1.0+)
+Target version: Flet >= 0.83.0 (Flet 1.0+)
 
 Breaking changes:
   - ❌ Flet 0.x: ft.alignment.center  →  Flet 1.0+: raises "no attribute 'center'"

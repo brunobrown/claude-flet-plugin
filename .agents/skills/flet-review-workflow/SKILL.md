@@ -1,6 +1,6 @@
 ---
 name: flet-review-workflow
-description: "Checklist-driven review for Flet apps and extensions (Flet 0.82.x+)."
+description: "Checklist-driven review for Flet apps and extensions (Flet 0.83.x+)."
 ---
 
 # Flet Review Workflow
@@ -58,6 +58,11 @@ If reviewing a Flet app, check all of these:
 - [ ] Uses `ft.Colors.NAME` (uppercase) not `ft.colors.NAME`
 - [ ] Uses `ft.Icons.NAME` (uppercase) not `ft.icons.NAME`
 - [ ] Theme uses `color_scheme_seed` or `color_scheme` (not `primary_swatch`)
+
+### Breaking Changes (0.83.x)
+- [ ] No `ft.padding.all()` / `ft.padding.symmetric()` / `ft.padding.only()` (removed in 0.83.0 — use class methods)
+- [ ] SharedPreferences `.set()` validates types (str, int, float, bool, list[str] only)
+- [ ] Scrollbar configuration uses `Scrollbar(...)` instance
 
 ---
 

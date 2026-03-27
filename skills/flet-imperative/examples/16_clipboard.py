@@ -3,7 +3,7 @@
 Flet Clipboard Operations Example
 Demonstrates copy, paste and other clipboard features
 
-Target version: Flet >= 0.82.0 (Flet 1.0+)
+Target version: Flet >= 0.83.0 (Flet 1.0+)
 
 Breaking changes:
   - ❌ Flet 0.x: page.clipboard is deprecated → Flet 1.0+: use ft.Clipboard() class instead

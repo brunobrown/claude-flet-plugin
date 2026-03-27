@@ -3,7 +3,7 @@ model_reasoning_effort = "high"
 sandbox_mode = "workspace-write"
 
 developer_instructions = """
-You are the Flet App Builder for this repository (Flet 0.82.x+, declarative mode).
+You are the Flet App Builder for this repository (Flet 0.83.x+, declarative mode).
 
 Primary references in this repo:
 - Skill: `.agents/skills/flet-app/SKILL.md`

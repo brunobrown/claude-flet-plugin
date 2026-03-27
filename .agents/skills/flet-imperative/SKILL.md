@@ -1,11 +1,11 @@
 ---
 name: flet-imperative
-description: "Expert knowledge for building Flet apps in imperative/procedural mode (page.add, page.update). Covers auto-update mechanism, 82+ breaking changes from Flet 0.x, critical API traps, error troubleshooting, 19 new controls, and 20 verified examples. Flet 0.82.x+."
+description: "Expert knowledge for building Flet apps in imperative/procedural mode (page.add, page.update). Covers auto-update mechanism, smart update logic, 82+ breaking changes from Flet 0.x, critical API traps, error troubleshooting, 19 new controls, customizable scrollbars, expanded SharedPreferences, and 20 verified examples. Flet 0.83.x+."
 ---
 
 # Flet Imperative Mode — Complete Reference
 
-> Flet 0.82.x+ | Imperative (procedural) mode | All APIs verified with `inspect`
+> Flet 0.83.x+ | Imperative (procedural) mode | All APIs verified with `inspect`
 
 ---
 
@@ -45,6 +45,8 @@ def button_click(e):
 
 page.add(ft.Button(content=ft.Text("Click"), on_click=button_click))
 ```
+
+**Smart update logic (0.83+)** — the framework tracks whether `page.update()` was called during event handler execution. If explicit `.update()` occurs, the automatic framework-level update is skipped, eliminating redundant updates and visual glitches.
 
 **Batch optimization** — disable auto-update for bulk operations:
 ```python
@@ -236,5 +238,5 @@ python -c "import flet as ft; print([m for m in dir(ft.Page) if not m.startswith
 
 ---
 
-**Applicable Version**: Flet >= 0.82.0
+**Applicable Version**: Flet >= 0.83.0
 **Breaking Changes**: 82+

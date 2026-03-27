@@ -1,9 +1,9 @@
 interface:
   display_name: "Flet App"
-  short_description: "Flet 0.82.x declarative app development (state, hooks, navigation, theming, async)."
+  short_description: "Flet 0.83.x declarative app development (state, hooks, navigation, theming, async)."
   brand_color: "#0EA5E9"
   default_prompt: |
-    Use this skill when building or reviewing a Python app with Flet declarative UI (0.82.x+).
+    Use this skill when building or reviewing a Python app with Flet declarative UI (0.83.x+).
     Priorities:
     - Use ft.run(main), page.render/page.render_views (no page.update in declarative mode)
     - Correct hook usage (@ft.component, no conditional hooks)

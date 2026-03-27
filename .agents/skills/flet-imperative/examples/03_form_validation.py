@@ -3,7 +3,7 @@
 Flet Form Validation Example
 Demonstrates form input, validation, and submission
 
-Target version: Flet >= 0.82.0 (Flet 1.0+)
+Target version: Flet >= 0.83.0 (Flet 1.0+)
 
 Breaking changes:
   - ❌ Flet 0.x: ft.app(target=main)  →  Flet 1.0+: raises error

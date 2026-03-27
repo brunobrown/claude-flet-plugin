@@ -3,7 +3,7 @@
 Flet Gesture Recognition Example
 Demonstrates tap, double tap, long press, pinch-to-zoom and other gestures
 
-Target version: Flet >= 0.82.0 (Flet 1.0+)
+Target version: Flet >= 0.83.0 (Flet 1.0+)
 
 Breaking changes:
   - ❌ Flet 0.x: DragUpdateEvent uses e.local_x/local_y  →  Flet 1.0+: use e.local_position.x/y instead

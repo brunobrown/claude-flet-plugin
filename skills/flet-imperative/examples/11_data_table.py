@@ -3,7 +3,7 @@
 Flet Data Table Example
 Demonstrates data display controls including DataTable, ListView, and GridView
 
-Target version: Flet >= 0.82.0 (Flet 1.0+)
+Target version: Flet >= 0.83.0 (Flet 1.0+)
 
 Breaking changes:
   - ❌ Flet 0.x: list_view.scroll_to(key="item_1")  →  Flet 1.0+: parameter renamed to scroll_key

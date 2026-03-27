@@ -3,7 +3,7 @@
 Flet Chart Bindng Example
 Demonstrates simple data visualization
 
-Target version: Flet >= 0.82.0 (Flet 1.0+)
+Target version: Flet >= 0.83.0 (Flet 1.0+)
 
 Breaking changes:
   - ✅ Flet 1.0+: Flet has no built-in chart controls; use Container composition or Canvas custom drawing

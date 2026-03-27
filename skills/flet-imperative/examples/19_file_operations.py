@@ -3,7 +3,7 @@
 Flet File System Operations Example
 Demonstrates file read/write, directory browsing and other features
 
-Target version: Flet >= 0.82.0 (Flet 1.0+)
+Target version: Flet >= 0.83.0 (Flet 1.0+)
 
 Breaking changes:
   - ❌ Flet 0.x: page.add(FilePicker())  →  Flet 1.0+: no longer works

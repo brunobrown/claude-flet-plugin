@@ -3,7 +3,7 @@
 Flet Drag and Drop Example
 Demonstrates usage of DragTarget and Draggable controls
 
-Target version: Flet >= 0.82.0 (Flet 1.0+)
+Target version: Flet >= 0.83.0 (Flet 1.0+)
 
 Breaking changes:
   - ❌ Flet 0.x: DragTarget event uses e.data to accept drag  →  Flet 1.0+: use e.accept instead

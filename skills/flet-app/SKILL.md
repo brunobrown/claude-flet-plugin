@@ -1,11 +1,26 @@
 ---
 name: flet-app
-description: "Expert knowledge for building multi-platform Python apps with Flet's declarative UI. Covers state management, hooks, navigation, theming, async patterns, component architecture, 82+ breaking changes, API traps, and 19 new controls. Flet 0.82.x+."
+description: "Expert knowledge for building multi-platform Python apps with Flet's declarative UI. Covers state management, hooks, navigation, theming, async patterns, component architecture, 82+ breaking changes, API traps, 19 new controls, declarative field validation (Annotated + V rules), customizable scrollbars, and 6.7x faster diffing. Flet 0.83.x+."
 ---
 
 # Flet App Development — Complete Reference
 
-> Flet 0.82.x | Declarative mode | Validated against real production apps
+> Flet 0.83.x | Declarative mode | Validated against real production apps
+
+---
+
+## What's New in Flet 0.83.x
+
+| Feature | Details |
+|---------|---------|
+| **6.7x faster diffing** | `Prop` descriptor tracks only modified properties; `@value` decorator enables content-based comparison for ~150 data types |
+| **Smart update()** | Framework tracks explicit `.update()` calls during handlers — skips auto-update to avoid redundant renders |
+| **Field validation** | `Annotated[type, V.rule()]` for declarative field constraints (e.g., `V.between(0, 1)`, `V.ge(0)`, `V.instance_of(...)`) |
+| **Customizable scrollbars** | `Scrollbar(thumb_visibility=, track_visibility=, thickness=, radius=, interactive=, orientation=)` on any scrollable control |
+| **Scrollable ExpansionPanelList** | Now inherits `ScrollableControl` — supports `scroll`, `auto_scroll`, `on_scroll`, `scroll_to()` |
+| **SharedPreferences expanded** | Now supports `int`, `float`, `bool`, `list[str]` (not just `str`) |
+| **Padding functions removed** | `ft.padding.all()` / `.symmetric()` / `.only()` removed — use `ft.Padding.all()` class methods |
+| **Desktop packaging** | Desktop binaries moved from PyPI to GitHub Releases, cached at `~/.flet/client/` |
 
 ---
 
@@ -1527,7 +1542,7 @@ def HomePage():
         [
             ft.Text(f"Hello, {name}!", size=28, weight=ft.FontWeight.BOLD),
             ft.Text(
-                "Welcome to the Flet 0.82.x demo app.",
+                "Welcome to the Flet 0.83.x demo app.",
                 size=14,
                 color=ft.Colors.GREY_700,
             ),

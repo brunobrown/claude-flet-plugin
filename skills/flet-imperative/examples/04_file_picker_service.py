@@ -3,7 +3,7 @@
 Flet File Picker as Service Example
 Demonstrates the FilePicker service usage in Flet 1.0+
 
-Target version: Flet >= 0.82.0 (Flet 1.0+)
+Target version: Flet >= 0.83.0 (Flet 1.0+)
 
 Breaking changes:
   - ❌ Flet 0.x: page.add(FilePicker())  →  Flet 1.0+: no longer works

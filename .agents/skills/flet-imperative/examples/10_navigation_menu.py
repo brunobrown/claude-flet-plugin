@@ -3,7 +3,7 @@
 Flet Navigation Menu Example
 Demonstrates NavigationRail, NavigationDrawer, AppBar, and other navigation controls
 
-Target version: Flet >= 0.82.0 (Flet 1.0+)
+Target version: Flet >= 0.83.0 (Flet 1.0+)
 
 Breaking changes:
   - ❌ Flet 0.x: ft.Tabs(tabs=[ft.Tab(text=..., content=...)])  →  Flet 1.0+: raises "unexpected keyword argument 'tabs'"

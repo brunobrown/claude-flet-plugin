@@ -1,6 +1,6 @@
 {
   "name": "@brunobrown/claude-flet-plugin",
-  "version": "0.4.0",
+  "version": "0.5.0",
   "description": "Claude Code plugin for Flet Python framework: declarative apps and extension packages",
   "keywords": [
     "claude-code",

@@ -44,7 +44,7 @@ web_search = "live"
 # config_file = "agents/docs-researcher.toml"
 #
 # [agents.flet_app_builder]
-# description = "Flet declarative app builder (Flet 0.82.x+)."
+# description = "Flet declarative app builder (Flet 0.83.x+)."
 # config_file = "agents/flet-app-builder.toml"
 #
 # [agents.flet_extension_builder]

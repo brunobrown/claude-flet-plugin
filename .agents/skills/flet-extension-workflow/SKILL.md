@@ -1,6 +1,6 @@
 ---
 name: flet-extension-workflow
-description: "Guided workflow for creating a Flet extension package (Service or UI Control) (Flet 0.82.x+)."
+description: "Guided workflow for creating a Flet extension package (Service or UI Control) (Flet 0.83.x+)."
 ---
 
 # Flet Extension Workflow

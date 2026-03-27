@@ -3,7 +3,7 @@
 Flet Custom Painting Example
 Demonstrates drawing features of the Canvas control
 
-Target version: Flet >= 0.82.0 (Flet 1.0+)
+Target version: Flet >= 0.83.0 (Flet 1.0+)
 
 Breaking changes:
   - ❌ Flet 0.x: Dropdown uses on_change  →  Flet 1.0+: use on_select instead
