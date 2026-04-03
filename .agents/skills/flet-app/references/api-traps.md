@@ -230,5 +230,69 @@ ft.Column(
 
 ---
 
+---
+
+## Observable Internals
+
+```python
+# Setting the same value does NOT trigger notification
+state.count = state.count  # No-op — value_equal(old, new) → True
+
+# Use notify() to force re-render when value hasn't changed
+state.notify()  # Fires _notify(None), triggers ALL listeners
+
+# Private fields (starting with _) are NEVER notified
+state._internal = "change"  # No notification, no re-render
+```
+
+**How `@ft.observable` works internally:**
+- `__setattr__` intercepts assignments to public fields
+- Compares old vs new with `value_equal(a, b)` (identity check → equality check → NaN special case)
+- Only calls `_notify(field)` if values differ
+- `_notify` increments `__version__` and calls all listeners in `WeakSet`
+- Components subscribe via `_subscribe_observable_args` — checks each arg/kwarg for `isinstance(Observable)`
+- Subscriptions are detached and re-attached on every render cycle
+
+---
+
+## use_context Guard (CRITICAL)
+
+```python
+# WRONG — crashes scheduler permanently
+@ft.component
+def MyPage():
+    ctx = ft.use_context(AppCtx)
+    state = ctx.state  # AttributeError if ctx is None
+
+# CORRECT — always guard
+@ft.component
+def MyPage():
+    ctx = ft.use_context(AppCtx)
+    if ctx is None:
+        return ft.Container()
+    state = ctx.state
+```
+
+**Why this happens:** Flet's `__updates_scheduler` may call `update()` on a component that was unmounted during a page transition. The context provider is no longer in the tree, so `use_context()` returns `None`. The `AttributeError` escapes to the scheduler loop, which only catches `CancelledError` — the scheduler dies permanently and ALL UI updates for that session are lost.
+
+**Workaround for scheduler crash resilience:**
+
+```python
+def _patch_session_scheduler(session):
+    """Auto-restart scheduler if it crashes."""
+    original = session.schedule_update
+
+    def safe_schedule_update(control):
+        original(control)
+        task = getattr(session, "_Session__updates_task", None)
+        if task and task.done():
+            logging.warning("Updates scheduler was dead — restarting")
+            session.start_updates_scheduler()
+
+    session.schedule_update = safe_schedule_update
+```
+
+---
+
 **Version**: Flet >= 0.83.0
 **All examples verified with `inspect`**

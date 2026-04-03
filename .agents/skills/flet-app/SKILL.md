@@ -164,6 +164,29 @@ def MyPage():
     return ft.Text(f"Current page: {state.current_page}")
 ```
 
+**Observable internals (important):**
+
+- `__setattr__` intercepts field changes and calls `_notify(field)` only if `value_equal(old, new)` returns False
+- **Setting the same value is a no-op** — no notification fires, no re-render
+- Private fields (starting with `_`) are NEVER notified
+- Lists/dicts are auto-wrapped as `ObservableList` / `ObservableDict`
+- Components subscribe to observables passed as **arguments** via `_subscribe_observable_args`
+
+**Manual notification — `notify()`:**
+
+When you need to force a re-render but the observable value hasn't changed (e.g., after an async operation where sub-fields changed), use `notify()`:
+
+```python
+# Force re-render even if no field changed
+state.notify()  # Calls _notify(None), triggers all listeners
+
+# Common use case: after async data loading
+await load_data(state, api, name)
+state.notify()  # Guarantee subscribers re-render
+```
+
+> **Why not just set the same value?** `state.field = state.field` is a no-op for `@ft.observable` because `value_equal(old, new)` returns True. Use `notify()` instead.
+
 ### 2. Local State: ft.use_state
 
 ```python
@@ -244,11 +267,21 @@ def App(state, service, clipboard):
 @ft.component
 def NotificationsPage():
     ctx = ft.use_context(AppCtx)  # Gets nearest provider value
+
+    # CRITICAL: Guard against None context (see warning below)
+    if ctx is None:
+        return ft.Container()
+
     state = ctx.state
     service = ctx.service
 
     # use_context auto-subscribes: re-renders when AppCtx changes
 ```
+
+> **CRITICAL — `use_context` can return `None`:**
+> When navigating between pages, Flet's updates scheduler may call `update()` on a component that was already replaced/unmounted. At that point, the context provider is no longer in the tree, so `use_context()` returns `None`. Accessing `ctx.anything` without a guard raises `AttributeError`, which **crashes the scheduler** (it only catches `CancelledError`). Once the scheduler dies, ALL subsequent UI updates for that session are lost — the page freezes permanently.
+>
+> **Always add `if ctx is None: return ft.Container()` immediately after `use_context()`.**
 
 ### 4. Pattern: State Created Outside Components
 
@@ -1409,6 +1442,30 @@ def route_change(e):
     page.update()
 ```
 
+### Context & Scheduler
+
+```python
+# WRONG: accessing context without guard — crashes scheduler permanently
+@ft.component
+def MyPage():
+    ctx = ft.use_context(AppCtx)
+    state = ctx.state  # AttributeError if ctx is None → scheduler dies → UI freezes
+
+# CORRECT: always guard use_context
+@ft.component
+def MyPage():
+    ctx = ft.use_context(AppCtx)
+    if ctx is None:
+        return ft.Container()  # Stale component, skip safely
+    state = ctx.state
+
+# WRONG: force re-render by setting same value (no-op)
+state.detail_name = state.detail_name  # value_equal → True → no notification
+
+# CORRECT: use notify() to force re-render
+state.notify()  # Always fires _notify(None) → all listeners re-render
+```
+
 ### Common Errors Table
 
 | Error | Cause | Solution |
@@ -1420,6 +1477,9 @@ def route_change(e):
 | Hook outside component | `use_state` in regular function | Move to `@ft.component` |
 | Global re-render per keystroke | `@ft.observable` for form input | `ft.use_state` for form fields |
 | `use_effect` cleanup ignored | Returning cleanup function | Use `cleanup=` parameter |
+| **UI freezes permanently** | `use_context()` returns `None` on stale component → `AttributeError` crashes scheduler | `if ctx is None: return ft.Container()` guard after every `use_context()` |
+| Observable same-value no-op | `state.x = state.x` — `value_equal` skips it | Use `state.notify()` to force re-render |
+| **Scheduler silently dead** | Any uncaught exception in `Component.update()` kills `__updates_scheduler` | Wrap `schedule_update` to auto-restart scheduler on crash |
 
 ---
 

@@ -1,5 +1,20 @@
 # Changelog
 
+## [0.5.1] - 2026-04-03
+
+### Added
+
+- **Critical: `use_context` None guard** — Documented that `ft.use_context()` can return `None` on stale/unmounted components during page transitions. Accessing `ctx.anything` without a guard crashes the `__updates_scheduler` permanently (it only catches `CancelledError`), freezing ALL subsequent UI updates for the session. Added mandatory guard pattern: `if ctx is None: return ft.Container()`
+- **Observable `notify()` method** — Documented `state.notify()` for forcing re-renders when observable value hasn't changed. Setting the same value is a no-op (`value_equal` returns True), so `notify()` is the correct way to force subscribers to re-render
+- **Observable internals** — Documented how `__setattr__` intercepts changes, `value_equal` comparison, private field exclusion, `ObservableList`/`ObservableDict` auto-wrapping, and component subscription via `_subscribe_observable_args`
+- **Scheduler crash resilience pattern** — Documented `safe_schedule_update` wrapper that auto-restarts the scheduler if it crashes, as a failsafe
+- Updated `api-traps.md` with Observable Internals section and `use_context` guard section
+- Updated `error-guide.md` with `NoneType` error from `use_context` and UI freeze diagnosis
+
+### Target Flet Version
+
+- Flet **0.84.x** — All findings verified against Flet 0.84.0 source code
+
 ## [0.5.0] - 2026-03-27
 
 ### Added

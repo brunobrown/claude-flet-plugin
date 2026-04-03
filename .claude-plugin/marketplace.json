@@ -10,8 +10,8 @@
     {
       "name": "flet",
       "source": "./",
-      "description": "Expert knowledge for Flet 0.83.x apps and extensions — 2 agents, 3 skills, 3 commands, 5 reference guides, 20 examples covering declarative and imperative modes, 85+ breaking changes, API traps, field validation, customizable scrollbars, and 19 new controls",
-      "version": "0.5.0",
+      "description": "Expert knowledge for Flet 0.84.x apps and extensions — 2 agents, 3 skills, 3 commands, 5 reference guides, 20 examples covering declarative and imperative modes, 85+ breaking changes, API traps, observable internals, scheduler crash resilience, field validation, customizable scrollbars, and 19 new controls",
+      "version": "0.5.1",
       "author": {
         "name": "Bruno Brown"
       },

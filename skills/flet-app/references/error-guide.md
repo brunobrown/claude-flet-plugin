@@ -49,6 +49,8 @@
 | `'Page' has no attribute 'snack_bar'` | Deprecated | `page.overlay.append(snackbar)` |
 | `'Page' has no attribute 'bottom_sheet'` | Deprecated | `page.overlay.append(sheet)` |
 | `'Page' has no attribute 'client_storage'` | Deprecated | `ft.SharedPreferences()` service |
+| `'NoneType' object has no attribute '...'` (in component) | `use_context()` returns `None` on stale/unmounted component — **crashes scheduler permanently** | Add `if ctx is None: return ft.Container()` guard after every `use_context()` call |
+| UI freezes after navigation (loading forever) | Scheduler crash from above error — `__updates_scheduler` only catches `CancelledError` | Fix the `use_context` guard + add scheduler restart patch to `schedule_update` |
 
 ---
 
