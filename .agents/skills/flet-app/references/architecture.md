@@ -450,6 +450,133 @@ def create_app(page: ft.Page):
 
 ---
 
+## Entry Point Pattern — Flutter Parallel
+
+The `main.py` + `app.py` separation follows the same convention used in Flutter projects:
+
+| Flutter | Flet | Role |
+|---------|------|------|
+| `lib/main.dart` | `main.py` | Entry point: `runApp()` / `ft.run()`, global initialization |
+| `lib/app.dart` | `app.py` | Root configuration: theme, routes, DI wiring, context setup |
+
+**Both files live at the project root, outside of `src/`.** They are bootstrap/orchestration files that connect all layers — they don't belong to any single layer.
+
+### `main.py` — Entry Point
+
+Minimal file. Initializes global services and calls `ft.run()`.
+
+```python
+# main.py
+import flet as ft
+from app import create_app
+from src.core.logger import configure_logging
+
+configure_logging()
+
+if __name__ == "__main__":
+    ft.run(create_app, assets_dir="assets")
+```
+
+### `app.py` — Application Configuration
+
+Equivalent to Flutter's `MaterialApp`. Configures:
+- Theme (light/dark)
+- Routing and navigation
+- Dependency injection (state, services, repositories)
+- Context provider setup
+- `page.render_views()` call with the root layout component
+
+```python
+# app.py
+import flet as ft
+from src.presentation.app import RootLayout
+from src.presentation.state_management.global_state import AppState
+
+def create_app(page: ft.Page):
+    page.title = "My App"
+    page.theme = light_theme()
+    page.dark_theme = dark_theme()
+
+    state = AppState()
+    # ... wire dependencies, handlers, routing ...
+
+    ctx = AppContext(state=state, ...)
+    page.render_views(RootLayout, ctx, state, services)
+```
+
+---
+
+## Layout Patterns — Scaffold Strategy
+
+In Flutter, each screen typically includes its own `Scaffold` (appbar + drawer + body + FAB). When multiple screens share the same shell, two patterns exist:
+
+### Pattern 1: Scaffold Per Screen (Flutter Default)
+
+Each page defines its own Scaffold. Best when screens have different appbars, drawers, or FABs.
+
+```
+presentation/
+ ├── pages/
+ │    ├── home/
+ │    │    └── home_page.py      ← includes its own header, drawer, FAB
+ │    └── settings/
+ │         └── settings_page.py  ← includes its own header, no drawer
+ └── components/
+```
+
+```python
+# presentation/pages/home/home_page.py
+@ft.component
+def HomePage() -> ft.View:
+    return ft.View(
+        controls=[AppHeader(), HomeContent()],
+        drawer=AppDrawer(),
+        floating_action_button=MyFAB(),
+    )
+```
+
+### Pattern 2: Shared Layout (Common in Larger Apps)
+
+A root layout component wraps all pages with a common structure. Best when most screens share the same header, drawer, and FAB.
+
+```
+presentation/
+ ├── app.py                  ← root layout: View + shared drawer + header + content slot
+ ├── pages/
+ │    ├── home/
+ │    │    └── home_page.py  ← only the content, no scaffold
+ │    └── settings/
+ │         └── settings_page.py
+ └── components/
+```
+
+```python
+# presentation/app.py — Root layout (shared Scaffold)
+@ft.component
+def App(ctx_value, state, services=None) -> ft.View:
+    return ft.View(
+        controls=[
+            AppHeader(...),
+            ft.Container(content=PageContent(), expand=True),
+        ],
+        drawer=AppDrawer(...),
+        floating_action_button=BmcButton(),
+        services=services or [],
+    )
+```
+
+### When to Use Each Pattern
+
+| Scenario | Recommended Pattern |
+|----------|-------------------|
+| Screens with different appbars/drawers | Per Screen |
+| Most screens share the same shell | Shared Layout |
+| Mix of shared and unique layouts | Shared Layout + per-screen overrides |
+| Small app (1-3 pages) | Per Screen (simpler) |
+| Large app (5+ pages, same shell) | Shared Layout |
+
+---
+
 ## Dependency Flow
 
 ```

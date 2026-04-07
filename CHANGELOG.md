@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.5.2] - 2026-04-07
+
+### Added
+
+- **Architecture: Entry Point Pattern** — Documented the `main.py` + `app.py` separation following Flutter's `main.dart` / `app.dart` convention. Entry points live at the project root, outside `src/`, as bootstrap files that connect all layers
+- **Architecture: Layout Patterns** — Documented two Scaffold strategies adapted from Flutter: "Per Screen" (each page has its own View/Scaffold) vs "Shared Layout" (root layout wraps all pages with common header, drawer, FAB). Includes guidance on when to use each pattern
+- Updated `references/architecture.md` with Entry Point Pattern and Layout Patterns sections
+
+### Target Flet Version
+
+- Flet **0.84.x** — Patterns verified in production Flet PKG app
+
 ## [0.5.1] - 2026-04-03
 
 ### Added
