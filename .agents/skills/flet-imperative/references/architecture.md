@@ -1,6 +1,10 @@
 # Flet App Architecture — Clean Architecture Pattern
 
-> Recommended project structure for production Flet apps. Follows clean architecture principles with clear separation between data, domain, and presentation layers.
+> Recommended project structure for production Flet apps. Adapted from Flutter's
+> Clean Architecture model (see `tmp/arquitetura_flutter.png`) and validated on a
+> production Flet declarative app (`meetmind`). Cleanly separates `data/`,
+> `domain/`, and `presentation/` while keeping `core/`, `services/`, and `utils/`
+> as cross-cutting infrastructure.
 
 ---
 
@@ -8,99 +12,122 @@
 
 ```
 flet_project/
-├── assets/
+├── assets/                        # Static assets bundled into the app
 │   ├── fonts/
 │   ├── icons/
 │   └── images/
 │
-├── src/
+├── config.py                      # Global config (lives at project root, like
+│                                  # Flutter's pubspec.yaml / settings)
+│
+├── src/                           # All application source code
+│   ├── __init__.py
+│   ├── main.py                    # Entry point — calls ft.run(...) (analogue of main.dart)
+│   ├── app.py                     # Root app config — theme, routing, DI, render_views (analogue of app.dart)
 │   │
-│   ├── core/                     # Application core (shared base)
-│   │   ├── constants.py         # Global constants
-│   │   ├── config.py            # General configuration
-│   │   ├── exceptions.py        # Error handling
-│   │   └── logger.py            # Application logging
+│   ├── core/                      # Cross-cutting base (utilities, error types, constants)
+│   │   ├── __init__.py
+│   │   ├── constants.py           # APP_NAME, route names, magic numbers
+│   │   ├── enums.py               # Shared enums (status codes, modes, etc.)
+│   │   ├── exceptions.py          # Domain-neutral exception hierarchy
+│   │   └── logger.py              # Logging configuration
 │   │
-│   ├── data/                    # Data layer (input/output)
-│   │   ├── sources/             # APIs, local database, etc.
+│   ├── data/                      # Data layer — implements domain interfaces
+│   │   ├── __init__.py
+│   │   ├── sources/               # External data sources (HTTP API, local DB, files)
 │   │   │   ├── api_source.py
 │   │   │   └── local_source.py
-│   │   │
-│   │   ├── models/              # Data transport models (DTOs)
+│   │   ├── models/                # DTOs / serializable records (separate from entities)
 │   │   │   └── user_model.py
-│   │   │
-│   │   └── repositories/        # Concrete implementations
-│   │       └── user_repository_impl.py
+│   │   ├── repositories/          # Concrete repository implementations
+│   │   │   └── user_repository_impl.py
+│   │   └── <feature_subfolders>/  # Optional feature-specific data modules
+│   │                              # (e.g. audio/, stt/, summary/ in meetmind)
 │   │
-│   ├── domain/                  # Business rules (system core)
-│   │   ├── entities/            # Pure entities
+│   ├── domain/                    # Business rules (pure Python, no Flet imports)
+│   │   ├── __init__.py
+│   │   ├── entities/              # Pure dataclasses representing business concepts
 │   │   │   └── user.py
-│   │   │
-│   │   ├── repositories/        # Interfaces (contracts)
+│   │   ├── repositories/          # Abstract interfaces (contracts) — implemented in data/
 │   │   │   └── user_repository.py
-│   │   │
-│   │   └── usecases/            # Use cases (business rules)
+│   │   ├── services/              # Domain services (logic that doesn't fit a single entity)
+│   │   │   └── auth_service.py
+│   │   └── usecases/              # Use cases — orchestrate entities + repositories
 │   │       └── login_usecase.py
 │   │
-│   ├── presentation/            # User interface (Flet)
-│   │   │
-│   │   ├── components/          # Reusable components
+│   ├── presentation/              # Flet UI layer (declarative components, hooks, theme)
+│   │   ├── __init__.py
+│   │   ├── components/            # Reusable UI building blocks
 │   │   │   ├── common/
 │   │   │   │   ├── buttons.py
 │   │   │   │   └── inputs.py
-│   │   │   │
 │   │   │   └── dialogs/
 │   │   │       └── dialog_factory.py
-│   │   │
-│   │   ├── pages/               # Main screens
+│   │   ├── pages/                 # Top-level screens, grouped by feature
 │   │   │   ├── auth/
 │   │   │   │   ├── login_page.py
 │   │   │   │   └── signup_page.py
-│   │   │   │
 │   │   │   ├── home/
 │   │   │   │   ├── home_page.py
 │   │   │   │   └── home_controller.py
-│   │   │   │
 │   │   │   └── settings/
 │   │   │       └── settings_page.py
-│   │   │
-│   │   ├── navigation/          # Routing and navigation
+│   │   ├── navigation/            # Router setup + nav service
 │   │   │   ├── app_router.py
 │   │   │   └── navigation_service.py
-│   │   │
-│   │   ├── themes/              # Visual themes (colors, styles)
+│   │   ├── themes/                # Light/dark themes, color schemes, typography
 │   │   │   ├── app_theme.py
 │   │   │   └── colors.py
-│   │   │
-│   │   ├── hooks/               # Reusable hooks (state + logic)
+│   │   ├── hooks/                 # Custom reusable hooks (state + logic)
 │   │   │   ├── use_auth.py
 │   │   │   ├── use_navigation.py
 │   │   │   └── use_theme.py
-│   │   │
-│   │   └── state_management/    # Global state
-│   │       ├── global_state.py
+│   │   └── state_management/      # Global app state — observables, context providers
+│   │       ├── global_providers.py
 │   │       └── user_state.py
 │   │
-│   ├── services/                # External services (infrastructure)
+│   ├── services/                  # Infrastructure services (standalone, side-effectful)
+│   │   ├── __init__.py            # e.g. app_paths, markdown rendering, exports
 │   │   ├── api_service.py
 │   │   └── storage_service.py
 │   │
-│   └── utils/                   # Helper functions
+│   └── utils/                     # Pure helper functions (no Flet, no I/O)
+│       ├── __init__.py
 │       ├── validators.py
 │       └── string_extensions.py
 │
-├── main.py                      # Application entry point
-├── app.py                       # Flet app configuration
-│
-├── tests/                       # Automated tests
+├── tests/                         # Automated tests (mirrors src/ layout)
+│   ├── conftest.py
 │   ├── unit/
 │   ├── widget/
 │   └── integration/
 │
-├── pyproject.toml               # Dependencies
+├── data/                          # Optional — runtime user data (sessions, exports, cache)
+│   ├── cache/
+│   ├── exports/
+│   ├── logs/
+│   └── sessions/
+│
+├── docs/                          # Project documentation
+├── scripts/                       # Dev/release scripts
+├── tmp/                           # Working files, design refs (gitignored)
+│
+├── pyproject.toml                 # Dependencies + [tool.flet.app] path = "src"
 ├── uv.lock
+├── settings.toml                  # Optional — runtime settings
 └── README.md
 ```
+
+**Important configuration:** when `main.py` / `app.py` live inside `src/`, register
+the path so `flet run` finds them:
+
+```toml
+# pyproject.toml
+[tool.flet.app]
+path = "src"
+```
+
+Run with: `flet run` (auto-resolves `src/main.py`) or `flet run src/main.py`.
 
 ---
 
@@ -447,6 +474,144 @@ def create_app(page: ft.Page):
     ctx = AppContext(state=state, login_usecase=login_usecase)
     page.render_views(App, ctx)
 ```
+
+---
+
+## Entry Point Pattern — Flutter Parallel
+
+The `main.py` + `app.py` separation follows the same convention used in Flutter projects (`lib/main.dart` + `lib/app.dart`):
+
+| Flutter | Flet | Role |
+|---------|------|------|
+| `lib/main.dart` | `src/main.py` | Entry point: `runApp()` / `ft.run()`, global initialization |
+| `lib/app.dart` | `src/app.py` | Root configuration: theme, routes, DI wiring, context setup |
+
+**Both files live inside `src/`** (mirroring Flutter's `lib/` layout — `src/` is the
+equivalent of `lib/`). They are bootstrap/orchestration files that connect all
+layers; they don't belong to any single layer but ship with the source tree.
+
+> Earlier versions of this guide placed `main.py` and `app.py` at the project
+> root. The current Flet-proven convention (validated on the `meetmind`
+> production app) keeps them inside `src/`, which lets `pyproject.toml`'s
+> `[tool.flet.app] path = "src"` resolve them automatically and keeps the project
+> root clean for configs (`pyproject.toml`, `config.py`, `settings.toml`, etc.).
+
+### `src/main.py` — Entry Point
+
+Minimal file. Initializes global services and calls `ft.run()`.
+
+```python
+# src/main.py
+import flet as ft
+
+from src.app import create_app
+from src.core.logger import configure_logging
+
+configure_logging()
+
+if __name__ == "__main__":
+    ft.run(create_app, assets_dir="assets")
+```
+
+### `src/app.py` — Application Configuration
+
+Equivalent to Flutter's `MaterialApp`. Configures:
+- Theme (light/dark)
+- Routing and navigation
+- Dependency injection (state, services, repositories)
+- Context provider setup
+- `page.render_views()` call with the root layout component
+
+```python
+# src/app.py
+import flet as ft
+
+from src.presentation.pages.app_layout import RootLayout
+from src.presentation.state_management.global_providers import AppState
+from src.presentation.themes.app_theme import dark_theme, light_theme
+
+
+def create_app(page: ft.Page):
+    page.title = "My App"
+    page.theme = light_theme()
+    page.dark_theme = dark_theme()
+
+    state = AppState()
+    # ... wire dependencies, handlers, routing ...
+
+    page.render_views(RootLayout, state)
+```
+
+---
+
+## Layout Patterns — Scaffold Strategy
+
+In Flutter, each screen typically includes its own `Scaffold` (appbar + drawer + body + FAB). When multiple screens share the same shell, two patterns exist:
+
+### Pattern 1: Scaffold Per Screen (Flutter Default)
+
+Each page defines its own Scaffold. Best when screens have different appbars, drawers, or FABs.
+
+```
+presentation/
+ ├── pages/
+ │    ├── home/
+ │    │    └── home_page.py      ← includes its own header, drawer, FAB
+ │    └── settings/
+ │         └── settings_page.py  ← includes its own header, no drawer
+ └── components/
+```
+
+```python
+# presentation/pages/home/home_page.py
+@ft.component
+def HomePage() -> ft.View:
+    return ft.View(
+        controls=[AppHeader(), HomeContent()],
+        drawer=AppDrawer(),
+        floating_action_button=MyFAB(),
+    )
+```
+
+### Pattern 2: Shared Layout (Common in Larger Apps)
+
+A root layout component wraps all pages with a common structure. Best when most screens share the same header, drawer, and FAB.
+
+```
+presentation/
+ ├── app.py                  ← root layout: View + shared drawer + header + content slot
+ ├── pages/
+ │    ├── home/
+ │    │    └── home_page.py  ← only the content, no scaffold
+ │    └── settings/
+ │         └── settings_page.py
+ └── components/
+```
+
+```python
+# presentation/app.py — Root layout (shared Scaffold)
+@ft.component
+def App(ctx_value, state, services=None) -> ft.View:
+    return ft.View(
+        controls=[
+            AppHeader(...),
+            ft.Container(content=PageContent(), expand=True),
+        ],
+        drawer=AppDrawer(...),
+        floating_action_button=BmcButton(),
+        services=services or [],
+    )
+```
+
+### When to Use Each Pattern
+
+| Scenario | Recommended Pattern |
+|----------|-------------------|
+| Screens with different appbars/drawers | Per Screen |
+| Most screens share the same shell | Shared Layout |
+| Mix of shared and unique layouts | Shared Layout + per-screen overrides |
+| Small app (1-3 pages) | Per Screen (simpler) |
+| Large app (5+ pages, same shell) | Shared Layout |
 
 ---
 

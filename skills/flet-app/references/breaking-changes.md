@@ -1,6 +1,42 @@
 # Flet 1.0+ Breaking Changes Guide
 
-> Complete list of breaking changes in Flet 1.0+ (>= 0.83.0). All deprecated APIs from Flet 0.x have been removed.
+> Complete list of breaking changes in Flet 1.0+ (>= 0.83.0). Updated for Flet 0.85.0. All deprecated APIs from Flet 0.x have been removed.
+
+---
+
+## −2. `DragTargetEvent` Coordinate Properties Deprecated (0.85.0)
+
+`DragTargetEvent.x`, `.y`, and `.offset` are deprecated as of **0.85.0** (scheduled removal: **0.88.0**).
+
+```python
+# OLD (deprecated 0.85.0, removed 0.88.0)
+def on_accept(e: ft.DragTargetEvent):
+    print(e.x, e.y, e.offset)
+
+# NEW
+def on_accept(e: ft.DragTargetEvent):
+    # Pointer position relative to the target's local bounds
+    print(e.local_position.x, e.local_position.y)
+    # Pointer position in global coordinates (== old offset)
+    print(e.global_position.x, e.global_position.y)
+```
+
+Applies to `on_accept`, `on_move`, `on_will_accept`, etc.
+
+---
+
+## −1. `page.go(route)` Deprecated (0.80.0, removal scheduled 0.90.0)
+
+```python
+# OLD (deprecated since 0.80.0; emits DeprecationWarning)
+page.go("/store")
+
+# NEW — async
+await page.push_route("/store")
+
+# NEW — sync wrapper (0.85.0+)
+page.navigate("/store")
+```
 
 ---
 

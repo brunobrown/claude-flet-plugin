@@ -26,7 +26,30 @@ Summarize the requirements before proceeding.
 
 ## Phase 2: Project Setup
 
-Create the project structure:
+For non-trivial apps, use the Clean Architecture layout (mirrors Flutter's
+`lib/` convention, validated in production Flet apps). For 1–2-page prototypes,
+use the flat fallback below.
+
+### Clean Architecture (recommended)
+
+```
+my_app/
+├── assets/                    # fonts/, icons/, images/
+├── config.py                  # Project-root config
+├── pyproject.toml             # [tool.flet.app] path = "src"
+├── tests/                     # conftest.py, unit/, widget/, integration/
+└── src/
+    ├── main.py                # ft.run(create_app, assets_dir="assets")
+    ├── app.py                 # create_app(page): theme, DI, page.render_views(...)
+    ├── core/                  # constants.py, enums.py, exceptions.py, logger.py
+    ├── data/                  # sources/, models/, repositories/
+    ├── domain/                # entities/, repositories/, services/, usecases/
+    ├── presentation/          # components/, pages/, navigation/, themes/, hooks/, state_management/
+    ├── services/              # api_service.py, storage_service.py, ...
+    └── utils/                 # validators.py, text_utils.py, ...
+```
+
+### Flat (prototype / very small app)
 
 ```
 my_app/
@@ -43,9 +66,9 @@ my_app/
 ```
 
 1. Create `pyproject.toml` with Flet dependency and `[tool.flet.app] path = "src"`
-2. Create `state.py` with `@ft.observable @dataclass AppState` based on requirements
-3. Create `context.py` with `AppContext` and `AppCtx = ft.create_context(None)`
-4. Create `config.py` with constants and navigation configuration
+2. Create `state.py` (or `src/presentation/state_management/global_providers.py` in the layered layout) with `@ft.observable @dataclass AppState` based on requirements
+3. Create `context.py` (or co-locate in `state_management/`) with `AppContext` and `AppCtx = ft.create_context(None)`
+4. Create `config.py` at project root (or `src/core/constants.py` for code-level constants) with app configuration and navigation defaults
 
 ---
 

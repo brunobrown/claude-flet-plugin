@@ -1,11 +1,22 @@
 ---
 name: flet-extension
-description: "Expert knowledge for creating Flet extension packages (Service Controls and UI Controls). Covers Python/Dart integration, type mapping, events, compound widgets, @control/@value decorators, Prop descriptor, project configuration, and publishing. Flet 0.83.x+."
+description: "Expert knowledge for creating Flet extension packages (Service Controls and UI Controls). Covers Python/Dart integration, type mapping, events, compound widgets, @control/@value decorators, Prop descriptor, project configuration, publishing, and awareness of companion extensions (flet-video screenshot + configurable controls, flet-audio AudioRecorder PCM16 streaming). Flet 0.85.x+."
 ---
 
 # Flet Extension Development — Complete Reference
 
-> Flet 0.83.x | Validated against real production extensions (flet-onesignal, flet-vibration)
+> Flet 0.85.x | Validated against real production extensions (flet-onesignal, flet-vibration, flet-video, flet-audio)
+
+## Flet 0.85.x context for extensions
+
+- Companion extensions evolved in lockstep with 0.85.0:
+  - **`flet-video`** — Configurable player controls (show/hide play/pause, seek bar, fullscreen, etc.) and an async `take_screenshot()` method on the player control
+  - **`flet-audio`** — New `AudioRecorder` with PCM16 streaming and direct upload to backend
+- Core APIs your extension may want to integrate with:
+  - `page.take_screenshot()` / `page.take_animation()` and the new top-level `Screenshot` control (`flet.controls.core.screenshot.Screenshot`)
+  - `ft.Router` outlets — if your extension renders a navigator/host, expose hooks for `use_route_params` / `use_view_path` interop
+  - `ft.use_dialog` — for UI controls that surface dialogs, prefer this hook over imperative `page.show_dialog`
+- The deprecated `DragTargetEvent.x/y/offset` properties (replaced by `local_position` / `global_position` in 0.85.0) affect any extension that re-emits or wraps drag targets — update before 0.88.0.
 
 ---
 

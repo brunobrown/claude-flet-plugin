@@ -1,6 +1,92 @@
 # Flet 1.0+ New Controls Reference
 
-> 19 new controls introduced in Flet 1.0+ (>= 0.83.0), plus new features in 0.83.0.
+> 19+ new controls introduced in Flet 1.0+ (>= 0.83.0), plus new features in 0.83.0 and 0.85.0.
+
+---
+
+## Flet 0.85.0 Additions
+
+### `ft.Router` — Declarative Routing
+
+```python
+import flet as ft
+
+
+@ft.component
+def App():
+    return ft.Router(
+        [
+            ft.Route(index=True, component=Home),
+            ft.Route(path="about", component=About),
+            ft.Route(path="products/:pid", component=ProductDetails),
+            ft.Route(path="users/:uid(\\d+)", component=UserPage,
+                     loader=lambda p: fetch_user(p["uid"])),
+        ],
+        not_found=NotFound,
+        manage_views=False,  # True for mobile view-stack
+    )
+
+
+@ft.component
+def ProductDetails():
+    params = ft.use_route_params()   # {"pid": "42"}
+    location = ft.use_route_location()  # "/products/42"
+    return ft.Text(f"Product {params['pid']}")
+```
+
+Hooks: `use_route_params`, `use_route_location`, `use_view_path`,
+`use_route_outlet`, `use_route_loader_data`, `is_route_active(path, exact)`.
+
+### `ft.use_dialog()` — Reactive Dialogs
+
+```python
+@ft.component
+def MyForm():
+    show, set_show = ft.use_state(False)
+
+    ft.use_dialog(
+        ft.AlertDialog(title=ft.Text("Hello!")) if show else None
+    )
+
+    return ft.FilledButton("Open", on_click=lambda _: set_show(True))
+```
+
+Frozen diff preserves `TextField` cursor/focus across re-renders.
+
+### `page.navigate(route)` — Sync Navigation
+
+```python
+ft.FilledButton("Go", on_click=lambda _: page.navigate("/products"))
+```
+
+Equivalent to `asyncio.create_task(page.push_route(route))`.
+
+### `page.pop_views_until(route, result=...)` + `on_views_pop_until`
+
+```python
+async def go_back(ev):
+    await page.pop_views_until("/", result="Done!")
+
+page.on_views_pop_until = lambda e: print(e.result, e.view.route)
+```
+
+### `Screenshot` control + `page.take_animation()`
+
+```python
+sc = ft.Screenshot(content=ft.Container(...))
+
+page.enable_screenshots = True
+
+# Single screenshot of subtree
+png = await sc.capture(pixel_ratio=2.0)
+
+# Full-page animated sequence (one round-trip)
+frames = await page.take_animation(
+    name="loading",
+    frame_delays_ms=[0, 100, 200, 300, 400],
+    pixel_ratio=2.0,
+)
+```
 
 ---
 

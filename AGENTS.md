@@ -13,7 +13,7 @@ This repository is a **Claude Code plugin** and also a **Codex skill pack** for 
 
 Codex-oriented skills are provided under:
 
-- `.agents/skills/flet-app/` (reference: declarative apps, Flet 0.83.x+)
+- `.agents/skills/flet-app/` (reference: declarative apps, Flet 0.85.x+)
 - `.agents/skills/flet-extension/` (reference: extension packages)
 - `.agents/skills/flet-imperative/` (reference: imperative mode, breaking changes, API traps, 20 examples)
 - `.agents/skills/flet-app-workflow/` (guided app build workflow)
@@ -27,7 +27,11 @@ Each skill includes:
 
 ## Flet version target
 
-All guidance in this repo targets **Flet 0.83.x** (declarative and imperative modes).
+All guidance in this repo targets **Flet 0.85.x** (declarative and imperative modes).
+Highlights covered: `ft.Router` (nested routes, outlets, loaders, mobile view stacks),
+`ft.use_dialog` (reactive dialog hook), `page.navigate` / `page.pop_views_until`,
+`Screenshot` control + `page.take_animation`, and `DragTargetEvent` coordinate
+migration (`local_position` / `global_position`).
 
 ## Credits
 

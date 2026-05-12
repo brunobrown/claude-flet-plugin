@@ -1,7 +1,7 @@
 {
   "name": "flet",
-  "version": "0.5.1",
-  "description": "Flet Python framework expertise: declarative apps and extension packages",
+  "version": "0.6.0",
+  "description": "Flet 0.85.x expertise: declarative apps (Router, use_dialog, screenshots) and extension packages",
   "author": {
     "name": "Bruno Brown"
   },

@@ -1,13 +1,13 @@
 [project]
 name = "claude-flet-plugin"
-version = "0.5.0"
-description = "Add your description here"
+version = "0.6.0"
+description = "Claude Code plugin for Flet 0.85.x: declarative apps and extension packages"
 requires-python = ">=3.10"
 dependencies = [
-    "flet>=0.83.0",
+    "flet>=0.85.0",
 ]
 
 [dependency-groups]
 dev = [
-    "flet[all]>=0.83.0",
+    "flet[all]>=0.85.0",
 ]

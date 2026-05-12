@@ -1,6 +1,6 @@
 ---
 name: flet-review-workflow
-description: "Checklist-driven review for Flet apps and extensions (Flet 0.83.x+)."
+description: "Checklist-driven review for Flet apps and extensions (Flet 0.85.x+)."
 ---
 
 # Flet Review Workflow
@@ -63,6 +63,17 @@ If reviewing a Flet app, check all of these:
 - [ ] No `ft.padding.all()` / `ft.padding.symmetric()` / `ft.padding.only()` (removed in 0.83.0 — use class methods)
 - [ ] SharedPreferences `.set()` validates types (str, int, float, bool, list[str] only)
 - [ ] Scrollbar configuration uses `Scrollbar(...)` instance
+
+### Flet 0.85.x checks
+- [ ] New apps prefer `ft.Router` over hand-rolled `on_route_change` for nested routes / loaders
+- [ ] `ft.Router(manage_views=True)` paired with `page.render_views(App)` (not `page.render`)
+- [ ] `View(route=ft.use_view_path())` in view-stack mode
+- [ ] `use_route_outlet()` only used inside layout-route components (routes with `children`)
+- [ ] No `page.go(route)` — use `page.navigate(route)` (sync) / `await page.push_route(route)` (async)
+- [ ] `pop_views_until` paired with `on_views_pop_until` (not `on_view_pop`)
+- [ ] Declarative components use `ft.use_dialog(dialog | None)` (call every render)
+- [ ] `DragTargetEvent`: use `local_position` / `global_position` (`.x` / `.y` / `.offset` deprecated 0.85.0)
+- [ ] `page.enable_screenshots = True` set before `take_screenshot` / `take_animation` / `Screenshot.capture`
 
 ---
 

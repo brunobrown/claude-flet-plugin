@@ -68,13 +68,17 @@ cp -R /path/to/claude-flet-plugin/.agents/skills /path/to/your-project/.agents/
 
 ## Flet Version
 
-This plugin targets **Flet 0.83.x** (both declarative and imperative modes). Code examples use:
+This plugin targets **Flet 0.85.x** (both declarative and imperative modes). Code examples use:
 
 - `ft.run(main)` as entry point
 - `@ft.component` for functional components
 - `@ft.observable @dataclass` for reactive state
 - `ft.use_state`, `ft.use_effect`, `ft.use_context` hooks
 - `ft.Colors.NAME` and `ft.Icons.NAME` (uppercase constants)
+- `ft.Router` (declarative router with nested routes, outlets, loaders, mobile view stacks — new in 0.85.0)
+- `ft.use_dialog` (reactive dialog hook — new in 0.85.0)
+- `page.navigate` / `page.pop_views_until` / `page.take_animation` / `Screenshot` (new in 0.85.0)
+- `DragTargetEvent.local_position` / `.global_position` (replacing deprecated `.x`/`.y`/`.offset` in 0.85.0)
 
 ## License
 

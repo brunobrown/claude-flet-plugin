@@ -4,6 +4,21 @@
 
 ---
 
+## Flet 0.85.0 Gotchas
+
+| API | Common Mistake | Correct Usage |
+|-----|---------------|---------------|
+| **`ft.Router` mode** | `manage_views=True` with `page.render(App)` | Use `page.render_views(App)` — Router returns a list of `View`s in view-stack mode |
+| **`ft.Router` view route** | `View(route="/")` hard-coded in all stack levels | `View(route=ft.use_view_path())` for unique Navigator keys per view |
+| **`use_route_outlet()` placement** | Called in leaf route component | Only call in layout route components (routes with `children`) |
+| **`ft.use_dialog`** | Wrapped in `if showing: ft.use_dialog(d)` | Hook order broken — call every render: `ft.use_dialog(d if showing else None)` |
+| **`ft.use_dialog`** | Pass same dialog object across re-renders to keep state | Pass a freshly-constructed dialog each render; frozen diff migrates state automatically if **type** matches |
+| **`page.take_screenshot()`** | Returns empty bytes | Set `page.enable_screenshots = True` first |
+| **`page.take_animation`** | Wrong frame timing because Python loops `take_screenshot` | Pass `frame_delays_ms=[...]` so Flutter side runs the loop (no RPC latency) |
+| **`page.go(route)`** | Used in new code | Deprecated 0.80.0 — use `page.navigate(route)` or `await page.push_route(route)` |
+| **`page.pop_views_until`** | Expecting it to fire `on_view_pop` | Fires `on_views_pop_until` (`ViewsPopUntilEvent`) — different handler |
+| **`DragTargetEvent.x`** | Used to read coords | Deprecated 0.85.0 — `e.local_position.x` (target-relative) or `e.global_position.x` (global) |
+
 ## Critical API Traps
 
 | API | Common Mistake | Correct Usage |

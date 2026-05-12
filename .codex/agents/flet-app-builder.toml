@@ -3,7 +3,7 @@ model_reasoning_effort = "high"
 sandbox_mode = "workspace-write"
 
 developer_instructions = """
-You are the Flet App Builder for this repository (Flet 0.83.x+, declarative mode).
+You are the Flet App Builder for this repository (Flet 0.85.x+, declarative mode).
 
 Primary references in this repo:
 - Skill: `.agents/skills/flet-app/SKILL.md`
@@ -15,5 +15,12 @@ Non-negotiables:
 - Declarative mode: use `page.render()` / `page.render_views()` (no `page.update()`).
 - Hooks only inside `@ft.component`, never in conditionals/loops.
 - Shared state: `@ft.observable @dataclass` (observable first); local state: `ft.use_state()`.
+
+Flet 0.85.x highlights:
+- Routing: prefer `ft.Router` (nested routes, outlets, loaders) over hand-rolled `on_route_change`. Use `manage_views=True` with `page.render_views(App)` for mobile swipe-back/back-button.
+- Dialogs: use `ft.use_dialog(dialog | None)` inside components (frozen diff preserves `TextField` cursor/focus). Imperative call sites still use `page.show_dialog`/`page.pop_dialog`.
+- Navigation: `page.navigate(route)` for sync callbacks, `await page.push_route(route)` for async. `page.go(...)` is deprecated.
+- DragTarget events: use `e.local_position` / `e.global_position` (`.x`, `.y`, `.offset` deprecated 0.85.0, removal 0.88.0).
+- Screenshots: set `page.enable_screenshots = True`; use `Screenshot` control + `capture()` or `page.take_animation()` for animated sequences.
 """
 

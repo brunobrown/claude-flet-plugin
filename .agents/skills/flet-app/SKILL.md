@@ -1,15 +1,27 @@
 ---
 name: flet-app
-description: "Expert knowledge for building multi-platform Python apps with Flet's declarative UI. Covers state management, hooks, navigation, theming, async patterns, component architecture, 82+ breaking changes, API traps, 19 new controls, declarative field validation (Annotated + V rules), customizable scrollbars, and 6.7x faster diffing. Flet 0.83.x+."
+description: "Expert knowledge for building multi-platform Python apps with Flet's declarative UI. Covers state management, hooks, navigation, theming, async patterns, component architecture, 85+ breaking changes, API traps, 19+ new controls, declarative field validation (Annotated + V rules), customizable scrollbars, 6.7x faster diffing, ft.Router (nested routes, outlets, loaders, mobile view stacks), ft.use_dialog hook, Screenshot/take_animation. Flet 0.85.x+."
 ---
 
 # Flet App Development — Complete Reference
 
-> Flet 0.83.x | Declarative mode | Validated against real production apps
+> Flet 0.85.x | Declarative mode | Validated against real production apps and Flet 0.85.0 source
 
 ---
 
-## What's New in Flet 0.83.x
+## What's New in Flet 0.85.x
+
+| Feature | Details |
+|---------|---------|
+| **`ft.Router`** | Declarative router with nested routes, layout `outlet`s, dynamic/optional/splat segments, regex constraints, per-route data `loader`s, hooks (`use_route_params`, `use_route_location`, `use_view_path`, `use_route_outlet`, `use_route_loader_data`, `is_route_active`), and mobile view-stack mode (`manage_views=True`) with swipe-back, system back button, and implicit `AppBar` back arrow |
+| **`ft.use_dialog(dialog)`** | Reactive dialog hook — portals a `DialogControl` to the page's dialog overlay. Pass `None` to dismiss. Preserves Flutter widget identity (e.g., `TextField` cursor) across re-renders via frozen diff |
+| **`page.navigate(route, **kwargs)`** | Sync wrapper for `page.push_route()` — use in `on_click` and other sync callbacks where awaiting is impossible |
+| **`page.pop_views_until(route, result=None)`** | Pops views from the navigation stack until a view with the given `route`. Result delivered via new `on_views_pop_until` (`ViewsPopUntilEvent`) |
+| **`page.take_animation(...)`** | Captures animated PNG frame sequence in a single round-trip (no Python↔Flutter RPC latency between frames). Requires `page.enable_screenshots = True` |
+| **`Screenshot` control** | New control with `content` + `capture(pixel_ratio, delay)` method for subtree screenshots |
+| **`DragTargetEvent` migration** | `.x`, `.y`, `.offset` deprecated in 0.85.0 (removal in 0.88.0) — use `local_position` (target-relative) or `global_position` (global) |
+
+## Flet 0.83.x Foundations (still applicable)
 
 | Feature | Details |
 |---------|---------|
@@ -69,24 +81,55 @@ page.render(Counter())    # WRONG — RuntimeError: No current renderer
 
 ### Directory Structure
 
+Clean Architecture layout — same separation of concerns as Flutter's
+recommended `lib/` structure (`core/`, `data/`, `domain/`, `presentation/`,
+`services/`, `utils/`), with `main.py` and `app.py` **inside `src/`** (the Flet
+equivalent of `lib/`). Validated on a production Flet declarative app.
+
 ```
 my_app/
-├── pyproject.toml
+├── assets/                    # fonts/, icons/, images/
+├── config.py                  # Project-root config (Flutter's pubspec parallel)
+├── pyproject.toml             # [tool.flet.app] path = "src"
+├── tests/                     # conftest.py, unit/, widget/, integration/
 └── src/
-    ├── main.py              # Entry point: ft.run(main)
-    ├── config.py            # Constants (IDs, navigation config)
-    ├── state.py             # @ft.observable @dataclass AppState
-    ├── context.py           # AppContext + ft.create_context
-    ├── components/
-    │   ├── __init__.py
-    │   ├── drawer.py        # Navigation drawer
-    │   └── log_viewer.py    # Reusable component
-    └── pages/
-        ├── __init__.py      # PAGE_BUILDERS dict
-        ├── home.py
-        ├── login.py
-        └── settings.py
+    ├── __init__.py
+    ├── main.py                # ft.run(create_app, assets_dir="assets")
+    ├── app.py                 # create_app(page): theme, DI, page.render_views(...)
+    │
+    ├── core/                  # Shared base (no Flet, no I/O)
+    │   ├── constants.py
+    │   ├── enums.py
+    │   ├── exceptions.py
+    │   └── logger.py
+    │
+    ├── data/                  # Implements domain interfaces
+    │   ├── sources/           # api_source.py, local_source.py
+    │   ├── models/            # DTOs
+    │   └── repositories/      # *_repository_impl.py
+    │
+    ├── domain/                # Pure business rules (no Flet imports)
+    │   ├── entities/          # Dataclasses
+    │   ├── repositories/      # Abstract contracts
+    │   ├── services/          # Domain services
+    │   └── usecases/          # Orchestrate entities + repositories
+    │
+    ├── presentation/          # Flet UI layer
+    │   ├── components/        # common/, dialogs/ — reusable widgets
+    │   ├── pages/             # Feature-grouped screens (auth/, home/, settings/)
+    │   ├── navigation/        # app_router.py, navigation_service.py
+    │   ├── themes/            # app_theme.py, colors.py
+    │   ├── hooks/             # use_auth.py, use_theme.py — reusable hooks
+    │   └── state_management/  # global_providers.py, *_state.py
+    │
+    ├── services/              # Infrastructure (api_service, storage, paths, exports)
+    └── utils/                 # Pure helpers (validators, datetime_utils, text_utils)
 ```
+
+See `references/architecture.md` for the full layered breakdown and dependency
+rules. For tiny apps (one or two pages), a flat `src/{main.py, pages/, components/}`
+is fine — adopt the full structure when the project crosses ~5 pages or has any
+real business logic.
 
 ### pyproject.toml
 
@@ -330,6 +373,13 @@ def main(page: ft.Page):
 | `use_memo` | `(fn, deps?) → value` | Memoize computed value |
 | `use_callback` | `(fn, deps?) → fn` | Memoize function identity |
 | `use_ref` | `() → Ref` | Persistent mutable reference |
+| `use_dialog` | `(dialog \| None) → None` | Portal a `DialogControl` to page's dialog overlay (0.85.0+) |
+| `use_route_params` | `() → dict[str, str]` | Dynamic route segment params (inside `ft.Router`, 0.85.0+) |
+| `use_route_location` | `() → str` | Current URL pathname (inside `ft.Router`, 0.85.0+) |
+| `use_view_path` | `() → str` | URL resolved up to this view level (`manage_views=True`, 0.85.0+) |
+| `use_route_outlet` | `() → Control` | Matched child component, for layout routes (0.85.0+) |
+| `use_route_loader_data` | `() → Any` | Result of the route's `loader=` (0.85.0+) |
+| `is_route_active` | `(path, exact=False) → bool` | Check if `path` matches current location (0.85.0+) |
 
 ### use_state
 
@@ -548,6 +598,55 @@ def MyComponent():
     print(config_ref.current)  # Result of the callable
 ```
 
+### use_dialog (0.85.0+)
+
+Reactive hook that portals a `DialogControl` to the page's dialog overlay. Call it on
+**every render** with either a dialog instance (to show) or `None` (to hide).
+
+```python
+@ft.component
+def DeleteConfirmation():
+    show, set_show = ft.use_state(False)
+
+    def confirm(e):
+        set_show(False)
+        # ... perform delete
+
+    def cancel(e):
+        set_show(False)
+
+    # Build dialog only when showing; pass None to dismiss
+    ft.use_dialog(
+        ft.AlertDialog(
+            title=ft.Text("Delete?"),
+            content=ft.Text("This cannot be undone."),
+            actions=[
+                ft.TextButton("Cancel", on_click=cancel),
+                ft.FilledButton("Delete", on_click=confirm),
+            ],
+        ) if show else None
+    )
+
+    return ft.FilledButton("Delete", on_click=lambda _: set_show(True))
+```
+
+**Behavior:**
+
+- The hook sets `open=True` automatically when adding to overlay
+- Passing `None` or unmounting the component dismisses with `open=False`
+- Re-rendering with a new dialog of the **same type** runs a frozen diff that
+  preserves Flutter widget identity (e.g., `TextField` keeps cursor/focus,
+  selection, scroll position) across re-renders
+- Re-rendering with a different dialog type creates a fresh entry — no state
+  carries over
+
+**Use vs. imperative API:**
+
+| Context | Use |
+|---------|-----|
+| Inside `@ft.component` declarative tree | `ft.use_dialog(dialog)` |
+| Imperative `main(page)` body / event handler outside component | `page.show_dialog(dialog)` / `page.pop_dialog()` |
+
 ### Hook Rules
 
 1. **Only inside `@ft.component`** — never in regular functions
@@ -557,6 +656,7 @@ def MyComponent():
 5. **`use_context` auto-subscribes if Observable** — no extra code needed
 6. **`use_ref` accepts callable** (0.81.0) — for lazy initialization
 7. **`@ft.component` accepts `key`** (0.81.0) — `MyComp(key="id")` for reconciliation
+8. **`use_dialog` must be called every render** (0.85.0) — pass `None` to dismiss; do NOT wrap in `if`
 
 ```python
 # WRONG: hook inside conditional
@@ -853,9 +953,177 @@ def PageContent():
     return ft.Container(content=builder(), expand=True, padding=20)
 ```
 
-### Router-Based Routing (Web Apps)
+### `ft.Router` — Declarative Router (Recommended for 0.85.x+)
 
-Official Flet pattern for web apps with URLs, deep linking, and navigation history.
+Flet 0.85.0 introduced **`ft.Router`**, a React Router–style declarative router with
+nested routes, layout outlets, dynamic segments, per-route data loaders, and a mobile
+view-stack mode for swipe-back gestures and system back-button.
+
+```python
+import flet as ft
+
+
+# Route components — plain @ft.component functions
+@ft.component
+def Home():
+    return ft.Column([
+        ft.Text("Home", size=24),
+        ft.FilledButton("Products", on_click=lambda _: ft.context.page.navigate("/products")),
+    ])
+
+
+@ft.component
+def ProductDetails():
+    params = ft.use_route_params()
+    return ft.Text(f"Product {params['pid']}")
+
+
+@ft.component
+def NotFound():
+    return ft.Text("404 — Not Found")
+
+
+@ft.component
+def App():
+    return ft.Router(
+        [
+            ft.Route(index=True, component=Home),
+            ft.Route(path="about", component=About),
+            ft.Route(path="products/:pid", component=ProductDetails),
+        ],
+        not_found=NotFound,
+    )
+
+
+def main(page: ft.Page):
+    page.title = "Router Demo"
+    page.render(App)
+
+
+ft.run(main)
+```
+
+#### Route definition
+
+```python
+ft.Route(
+    path="users/:uid(\\d+)",  # dynamic + regex constraint
+    component=UserPage,
+    loader=lambda params: fetch_user(params["uid"]),  # data loader
+    children=[                                           # nested routes
+        ft.Route(index=True, component=UserOverview),
+        ft.Route(path="posts/:post_id?", component=PostList),  # optional segment
+        ft.Route(path="files/:rest*", component=FileBrowser),   # splat
+    ],
+)
+```
+
+Segment forms:
+
+| Form | Example | Matches |
+|------|---------|---------|
+| Dynamic | `:id` | `42`, `abc` |
+| Optional | `:id?` | present or absent |
+| Splat | `:rest*` | rest of path |
+| Regex | `:id(\\d+)` | digits only |
+
+#### Router hooks
+
+| Hook | Purpose |
+|------|---------|
+| `use_route_params()` | Dict of dynamic segment values |
+| `use_route_location()` | Current URL pathname |
+| `use_view_path()` | Resolved URL for the current view level (use as `View.route` in `manage_views=True`) |
+| `use_route_outlet()` | Returns the matched child component — call inside a layout route's component |
+| `use_route_loader_data()` | Returns the value returned by this route's `loader` |
+| `is_route_active(path, exact=False)` | True if `path` matches current location (prefix match by default) |
+
+All hooks return safe defaults (`{}`, `""`, `None`, `False`) when called outside a
+`Router` tree — useful during stale re-renders.
+
+#### Layout routes with outlets
+
+```python
+@ft.component
+def Layout():
+    return ft.Column([
+        ft.AppBar(title=ft.Text("App")),
+        ft.use_route_outlet(),  # renders the matched child
+    ])
+
+
+ft.Router([
+    ft.Route(component=Layout, children=[
+        ft.Route(index=True, component=Home),
+        ft.Route(path="about", component=About),
+    ]),
+])
+```
+
+#### Mobile view-stack mode (`manage_views=True`)
+
+Produces a list of `View`s (one per path level) instead of a single component tree.
+Enables native swipe-back gesture, system back button, and `AppBar` implicit back arrow.
+**Must be used with `page.render_views(App)`** (not `page.render(App)`).
+
+Route components must return `ft.View(...)` with `route` set (use `use_view_path()` for
+a unique Navigator key per stack level).
+
+```python
+@ft.component
+def ProductDetailsView():
+    params = ft.use_route_params()
+    return ft.View(
+        route=ft.use_view_path(),
+        appbar=ft.AppBar(title=ft.Text(f"Product {params['pid']}")),
+        controls=[ft.Text("Details here")],
+    )
+
+
+@ft.component
+def App():
+    return ft.Router(
+        [
+            ft.Route(index=True, component=HomeView),
+            ft.Route(path="products/:pid", component=ProductDetailsView),
+        ],
+        manage_views=True,
+    )
+
+
+def main(page: ft.Page):
+    page.render_views(App)
+```
+
+`Route(outlet=True)` makes a layout route wrap its child as an outlet within a single
+`View` (instead of each child producing its own `View`).
+
+---
+
+### Page navigation methods (0.85.x)
+
+```python
+# Async — push a new route
+await page.push_route("/products/42")
+
+# Sync wrapper — use in on_click and other sync callbacks
+page.navigate("/products/42")
+
+# Pop until a target view + deliver result
+await page.pop_views_until("/", result="Done!")
+# Listen for the result on the destination view:
+page.on_views_pop_until = lambda e: print(e.result, e.view)
+```
+
+`page.go()` is **deprecated since 0.80.0** (removal in 0.90.0) — use `push_route` /
+`navigate` instead.
+
+---
+
+### Imperative Router-Based Routing (legacy / fine-grained control)
+
+If `ft.Router` doesn't fit (e.g., dynamic route table from a database), the old
+`page.views` + `on_route_change` pattern still works.
 
 ```python
 import flet as ft
@@ -877,7 +1145,7 @@ def main(page: ft.Page):
                     ft.Text("Welcome!", size=24),
                     ft.FilledButton(
                         "Go to Store",
-                        on_click=lambda _: page.go("/store"),
+                        on_click=lambda _: page.navigate("/store"),
                     ),
                 ],
             )
@@ -900,11 +1168,11 @@ def main(page: ft.Page):
         """Called when user presses Back."""
         page.views.pop()
         top_view = page.views[-1]
-        page.go(top_view.route)
+        page.navigate(top_view.route)
 
     page.on_route_change = route_change
     page.on_view_pop = view_pop
-    page.go(page.route)
+    page.navigate(page.route)
 
 
 ft.run(main)

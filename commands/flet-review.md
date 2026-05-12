@@ -51,8 +51,26 @@ If reviewing a Flet app, check all of these:
 ### Navigation
 - [ ] `view_ref[0].show_drawer()` used (NOT `page.show_drawer()`)
 - [ ] PAGE_BUILDERS dict maps page IDs to component functions
-- [ ] Router clears `page.views` before adding new views
+- [ ] Router clears `page.views` before adding new views (imperative router pattern)
 - [ ] `on_view_pop` handler implemented for router-based navigation
+- [ ] **0.85.0+**: New apps prefer `ft.Router` over hand-rolled `on_route_change` for nested routes/loaders
+- [ ] **0.85.0+**: `ft.Router(manage_views=True, ...)` paired with `page.render_views(App)` (not `page.render`)
+- [ ] **0.85.0+**: `View(route=ft.use_view_path())` in view-stack mode (unique Navigator key per stack level)
+- [ ] **0.85.0+**: `use_route_outlet()` only called inside layout-route components (routes with `children`)
+- [ ] **0.85.0+**: No `page.go(route)` — use `page.navigate(route)` (sync) or `await page.push_route(route)` (async)
+- [ ] **0.85.0+**: `pop_views_until` paired with `on_views_pop_until` (not `on_view_pop`)
+
+### Dialogs (0.85.0+)
+- [ ] Declarative components use `ft.use_dialog(dialog | None)` for dialogs
+- [ ] `ft.use_dialog()` called every render (NOT wrapped in `if`)
+- [ ] Imperative call sites still use `page.show_dialog(...)` / `page.pop_dialog()`
+
+### Screenshots (0.85.0+)
+- [ ] `page.enable_screenshots = True` set before `take_screenshot` / `take_animation` / `Screenshot.capture`
+- [ ] `take_animation` used (not a Python loop over `take_screenshot`) for animated captures
+
+### Drag Targets (0.85.0+)
+- [ ] No deprecated `e.x` / `e.y` / `e.offset` on `DragTargetEvent` — use `local_position` / `global_position`
 
 ### Styling
 - [ ] Uses `ft.Colors.NAME` (uppercase) not `ft.colors.NAME`

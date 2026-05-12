@@ -1,15 +1,26 @@
 ---
 name: flet-imperative
-description: "Expert knowledge for building Flet apps in imperative/procedural mode (page.add, page.update). Covers auto-update mechanism, smart update logic, 82+ breaking changes from Flet 0.x, critical API traps, error troubleshooting, 19 new controls, customizable scrollbars, expanded SharedPreferences, and 20 verified examples. Flet 0.83.x+."
+description: "Expert knowledge for building Flet apps in imperative/procedural mode (page.add, page.update). Covers auto-update mechanism, smart update logic, 85+ breaking changes from Flet 0.x, critical API traps, error troubleshooting, 19+ new controls, customizable scrollbars, expanded SharedPreferences, page.navigate / pop_views_until / take_animation, Screenshot control, DragTargetEvent migration, and 20 verified examples. Flet 0.85.x+."
 ---
 
 # Flet Imperative Mode — Complete Reference
 
-> Flet 0.83.x+ | Imperative (procedural) mode | All APIs verified with `inspect`
+> Flet 0.85.x+ | Imperative (procedural) mode | All APIs verified against Flet 0.85.0 source
 
 ---
 
-## What's New in Flet 0.83.x
+## What's New in Flet 0.85.x (Imperative-Relevant)
+
+| Feature | Details |
+|---------|---------|
+| **`page.navigate(route)`** | Sync wrapper for `page.push_route()` — use in `on_click` and other sync callbacks |
+| **`page.pop_views_until(route, result=None)`** | Pop views to a target route. Result delivered via new `on_views_pop_until` (`ViewsPopUntilEvent`) |
+| **`page.take_animation(name, frame_delays_ms, pixel_ratio)`** | Capture animated PNG sequence in one round-trip; requires `page.enable_screenshots = True` |
+| **`Screenshot` control** | New control with `content` + async `capture()` for subtree screenshots |
+| **`DragTargetEvent` deprecations** | `.x`, `.y`, `.offset` deprecated (removal in 0.88.0) — use `local_position` / `global_position` |
+| **`ft.Router` (also imperative-friendly)** | While `ft.Router` lives in components, you can still mount one inside `page.render(App)` from imperative code |
+
+## Flet 0.83.x Foundations
 
 | Feature | Details |
 |---------|---------|

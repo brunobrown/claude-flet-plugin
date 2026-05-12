@@ -1,5 +1,64 @@
 # Changelog
 
+## [0.6.0] - 2026-05-11
+
+### Added — Flet 0.85.0 Support
+
+- **`ft.Router`** — Documented the new declarative router for Flet 0.85.0. React Router-like API with:
+  - Nested routes via `Route(path=..., children=[...])`
+  - Layout routes with `outlet=True` rendered via `use_route_outlet()`
+  - Index routes (`Route(index=True, component=Home)`)
+  - Dynamic segments (`:id`), optional segments (`:id?`), splats (`:rest*`), and regex constraints (`:id(\\d+)`)
+  - Per-route data loaders surfaced via `use_route_loader_data()`
+  - Mobile view stack mode (`manage_views=True`) — produces a list of `View`s with swipe-back gesture, system back button, and implicit `AppBar` back arrow
+  - Hooks: `use_route_params()`, `use_route_location()`, `use_view_path()`, `use_route_outlet()`, `use_route_loader_data()`, `is_route_active(path, exact=False)`
+  - 404 handling via `not_found=` parameter
+- **`ft.use_dialog()`** — Documented the new dialog hook that portals a `DialogControl` to the page's dialog overlay as reactive state. Replaces imperative `page.show_dialog()` / `page.pop_dialog()` for declarative components. Preserves Flutter widget identity (e.g., `TextField` cursor/focus) across re-renders via frozen diff
+- **`page.navigate(route, **kwargs)`** — Documented the new synchronous navigation wrapper. Equivalent to `asyncio.create_task(page.push_route(route, **kwargs))`. Use in `on_click` and other sync callbacks where awaiting is not possible
+- **`page.pop_views_until(route, result=None)`** — Documented the new method that pops views from the navigation stack until a view with the given `route` is found, delivering an optional `result` via the new `on_views_pop_until` event (`ViewsPopUntilEvent`)
+- **`page.take_animation(name, frame_delays_ms, pixel_ratio)`** — Documented the new method that captures an animated sequence of page screenshots in a single round-trip (no Python↔Flutter RPC latency between frames). Requires `page.enable_screenshots = True`
+- **`Screenshot` control** — Documented the new control with `content` and `capture(pixel_ratio, delay)` method to capture screenshots of an enclosed subtree
+- **`page.enable_screenshots`** — Documented the flag required to enable `take_screenshot` and `take_animation`
+- **`DragTargetEvent` deprecations** — Documented that `.x`, `.y`, and `.offset` properties are deprecated in 0.85.0 (removal scheduled 0.88.0). Use `local_position` for target-relative coordinates or `global_position` for global coordinates
+- **Extension awareness** — Documented updates to companion extensions: `flet-video` (configurable controls + `take_screenshot()`) and `flet-audio` (`AudioRecorder` with PCM16 streaming and direct upload)
+
+### Changed
+
+- Bumped target Flet version from **0.84.x** to **0.85.x** across all skills, agents, commands, references, and README
+- Updated `flet-app-builder` and `flet-extension-builder` agents with 0.85.x awareness (Router, use_dialog, navigate, pop_views_until, Screenshot, DragTargetEvent migration)
+- Updated `/flet-review` command with Flet 0.85.x review checklist (router patterns, dialog hook usage, deprecated DragTargetEvent properties)
+- Enriched `references/breaking-changes.md` with the DragTargetEvent property deprecations
+- Enriched `references/new-controls.md` with Router, use_dialog, Screenshot, pop_views_until, and take_animation entries
+- Enriched `references/api-traps.md` with Router gotchas (must use `manage_views=True` with `render_views`, view route uniqueness, outlet placement) and `use_dialog` lifecycle notes
+- Updated Codex pack (`.agents/skills/*`, `.codex/*`, `AGENTS.md`) for parity with the Claude pack
+
+### Changed — Architecture
+
+- **Clean Architecture directory model updated** — Aligned the recommended layout
+  with the Flutter Clean Architecture pattern (see `tmp/arquitetura_flutter.png`)
+  and the production-validated `meetmind` Flet project. Key changes:
+  - `main.py` and `app.py` now live **inside `src/`** (the Flet equivalent of
+    Flutter's `lib/`), not at the project root
+  - `config.py` lives at the project root (next to `pyproject.toml`)
+  - `core/` adds an `enums.py` slot for shared enums
+  - `domain/` adds a `services/` subfolder for domain services
+  - `data/` documents optional feature-specific subfolders (e.g., `audio/`,
+    `stt/`, `summary/` in meetmind) alongside the canonical `sources/`,
+    `models/`, `repositories/`
+  - Tests now include `conftest.py` and mirror the `unit/`, `widget/`,
+    `integration/` split
+  - Project root documents optional `data/`, `docs/`, `scripts/`, `tmp/`,
+    `settings.toml`
+- Updated `references/architecture.md`, `skills/flet-app/SKILL.md`,
+  `agents/flet-app-builder.md`, `commands/flet-app.md`, and the matching Codex
+  pack files
+
+### Target Flet Version
+
+- Flet **0.85.x** — Verified against `flet==0.85.0` source code in `.venv` (Python 3.14, Flutter 3.41.7)
+
+---
+
 ## [0.5.2] - 2026-04-07
 
 ### Added
